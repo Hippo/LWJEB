@@ -36,7 +36,7 @@ import java.util.Collection;
  * @author Hippo
  * @since 9/26/2018
  */
-public final class StandardSubscriptionPopulator extends AbstractSubscriptionPopulator {
+public class StandardSubscriptionPopulator extends AbstractSubscriptionPopulator {
 
     /**
      * An instance to {@link StandardSubscriptionPopulator}.
@@ -44,10 +44,18 @@ public final class StandardSubscriptionPopulator extends AbstractSubscriptionPop
     public static final StandardSubscriptionPopulator INSTANCE = new StandardSubscriptionPopulator();
 
     /**
-     * Initializes the subscription populator with a {@link me.hippo.systems.lwjeb.subscription.collect.impl.StandardSubscriptionCollector}.
+     * Initializes the {@link StandardSubscriptionPopulator} with a {@link me.hippo.systems.lwjeb.subscription.collect.impl.StandardSubscriptionCollector}.
      */
     public StandardSubscriptionPopulator() {
         super(SubscriptionCollector.standard());
+    }
+
+    /**
+     * Creates a new {@link StandardSubscriptionPopulator} with the desired {@link SubscriptionCollector}.
+     * @param collector  The collector.
+     */
+    public StandardSubscriptionPopulator(final SubscriptionCollector collector){
+        super(collector);
     }
 
     /**

@@ -25,6 +25,7 @@
 package me.hippo.systems.lwjeb.subscription.registry;
 
 import me.hippo.systems.lwjeb.subscription.Subscription;
+import me.hippo.systems.lwjeb.subscription.collect.SubscriptionCollector;
 import me.hippo.systems.lwjeb.subscription.populate.SubscriptionPopulator;
 
 import java.util.Collection;
@@ -58,9 +59,28 @@ public interface SubscriptionRegistry {
      */
     Collection<Subscription> getSubscriptions(final Class<?> event);
 
+    /**
+     * Gets the {@link StandardSubscriptionRegistry}.
+     * @return  The {@link StandardSubscriptionRegistry}.
+     */
     static SubscriptionRegistry standard(){
         return StandardSubscriptionRegistry.INSTANCE;
     }
 
+    /**
+     * Gets the {@link MethodBasedSubscriptionRegistry}.
+     * @return  The {@link MethodBasedSubscriptionRegistry}.
+     */
+    static SubscriptionRegistry method(){
+        return MethodBasedSubscriptionRegistry.INSTANCE;
+    }
+
+    /**
+     * Gets the {@link FieldBasedSubscriptionRegistry}.
+     * @return  The {@link FieldBasedSubscriptionRegistry}.
+     */
+    static SubscriptionRegistry field(){
+        return FieldBasedSubscriptionRegistry.INSTANCE;
+    }
 
 }

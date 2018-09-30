@@ -25,6 +25,8 @@
 package me.hippo.testing.systems.lwjeb;
 
 import me.hippo.systems.lwjeb.EventBus;
+import me.hippo.systems.lwjeb.FieldBasedEventBus;
+import me.hippo.systems.lwjeb.MethodBasedEventBus;
 import me.hippo.systems.lwjeb.StandardEventBus;
 import me.hippo.systems.lwjeb.annotation.Collect;
 import me.hippo.systems.lwjeb.listener.Listener;
@@ -75,6 +77,6 @@ public final class Main {
      */
     @Collect
     public void onEvent(final TestEvent testEvent){
-        System.out.println(testEvent.cancel);
+       System.out.println(testEvent.cancel);
     }
 }

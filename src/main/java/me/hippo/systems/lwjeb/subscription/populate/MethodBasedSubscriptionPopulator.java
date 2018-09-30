@@ -22,16 +22,22 @@
  * SOFTWARE.
  */
 
-package me.hippo.systems.lwjeb;
+package me.hippo.systems.lwjeb.subscription.populate;
+
+import me.hippo.systems.lwjeb.subscription.collect.SubscriptionCollector;
 
 /**
- * The {@link StandardEventBus}, this will be good to use for most cases.
- * <p>
- *     The default constructor already makes it initialize with a {@link me.hippo.systems.lwjeb.subscription.registry.StandardSubscriptionRegistry},
- *     so no need for one here.
- * </p>
+ * The {@link MethodBasedSubscriptionPopulator}, used to populate the {@link me.hippo.systems.lwjeb.subscription.registry.MethodBasedSubscriptionRegistry}.
  *
  * @author Hippo
- * @sincer 9/26/2018
+ * @since 9/30/2018
  */
-public final class StandardEventBus extends AbstractEventBus{}
+public final class MethodBasedSubscriptionPopulator extends StandardSubscriptionPopulator{
+
+    /**
+     * Creates a new {@link MethodBasedSubscriptionPopulator} with the {@link me.hippo.systems.lwjeb.subscription.collect.impl.MethodBasedSubscriptionCollector}.
+     */
+    public MethodBasedSubscriptionPopulator(){
+        super(SubscriptionCollector.method());
+    }
+}

@@ -78,4 +78,12 @@ public interface SubscriptionPopulator {
     static SubscriptionPopulator standard(){
         return StandardSubscriptionPopulator.INSTANCE;
     }
+
+    static SubscriptionPopulator method(){
+        return MethodBasedSubscriptionPopulator.INSTANCE;
+    }
+
+    static SubscriptionPopulator field(){
+        return FieldBasedSubscriptionPopulator.INSTANCE;
+    }
 }

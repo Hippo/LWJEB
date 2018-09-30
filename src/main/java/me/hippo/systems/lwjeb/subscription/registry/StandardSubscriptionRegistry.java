@@ -24,18 +24,36 @@
 
 package me.hippo.systems.lwjeb.subscription.registry;
 
+import me.hippo.systems.lwjeb.subscription.populate.StandardSubscriptionPopulator;
+import me.hippo.systems.lwjeb.subscription.populate.SubscriptionPopulator;
+
 /**
  * The {@link StandardSubscriptionRegistry}, this is the default registry.
  *
  * @author Hippo
  * @since 9/26/2018
  */
-public final class StandardSubscriptionRegistry extends AbstractSubscriptionRegistry{
+public class StandardSubscriptionRegistry extends AbstractSubscriptionRegistry{
 
     /**
      * An instance to {@link StandardSubscriptionRegistry}.
      */
     public static final StandardSubscriptionRegistry INSTANCE = new StandardSubscriptionRegistry();
+
+    /**
+     * Creates a new {@link StandardSubscriptionRegistry} with the {@link StandardSubscriptionPopulator}.
+     */
+    public StandardSubscriptionRegistry(){
+        this(SubscriptionPopulator.standard());
+    }
+
+    /**
+     * Creates a new {@link StandardSubscriptionRegistry} with the desired {@link SubscriptionPopulator}.
+     * @param populator  The populator.
+     */
+    public StandardSubscriptionRegistry(final SubscriptionPopulator populator){
+        super(populator);
+    }
 
     /**
      * Registers {@code parent} to the event bus.

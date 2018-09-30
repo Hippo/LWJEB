@@ -24,14 +24,24 @@
 
 package me.hippo.systems.lwjeb;
 
+import me.hippo.systems.lwjeb.subscription.registry.SubscriptionRegistry;
+
 /**
- * The {@link StandardEventBus}, this will be good to use for most cases.
- * <p>
- *     The default constructor already makes it initialize with a {@link me.hippo.systems.lwjeb.subscription.registry.StandardSubscriptionRegistry},
- *     so no need for one here.
- * </p>
+ * The {@link MethodBasedEventBus}, only collects methods.
+ * <note>
+ *     Thanks to Vladymyr for reminding me about this, sorta forgot about it ;P.
+ * </note>
  *
  * @author Hippo
- * @sincer 9/26/2018
+ * @since 9/29/2018
  */
-public final class StandardEventBus extends AbstractEventBus{}
+public final class MethodBasedEventBus extends AbstractEventBus{
+
+    /**
+     * Creates a new {@link MethodBasedEventBus} with the m{@link me.hippo.systems.lwjeb.subscription.registry.MethodBasedSubscriptionRegistry}.
+     */
+    public MethodBasedEventBus(){
+        super(SubscriptionRegistry.method());
+    }
+
+}

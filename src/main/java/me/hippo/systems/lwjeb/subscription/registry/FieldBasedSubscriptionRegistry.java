@@ -22,16 +22,22 @@
  * SOFTWARE.
  */
 
-package me.hippo.systems.lwjeb;
+package me.hippo.systems.lwjeb.subscription.registry;
+
+import me.hippo.systems.lwjeb.subscription.populate.SubscriptionPopulator;
 
 /**
- * The {@link StandardEventBus}, this will be good to use for most cases.
- * <p>
- *     The default constructor already makes it initialize with a {@link me.hippo.systems.lwjeb.subscription.registry.StandardSubscriptionRegistry},
- *     so no need for one here.
- * </p>
+ * The {@link FieldBasedSubscriptionRegistry}, used to register {@link me.hippo.systems.lwjeb.subscription.impl.FieldSubscription}s.
  *
  * @author Hippo
- * @sincer 9/26/2018
+ * @since 9/30/2018
  */
-public final class StandardEventBus extends AbstractEventBus{}
+public final class FieldBasedSubscriptionRegistry extends StandardSubscriptionRegistry{
+
+    /**
+     * Creates a new {@link FieldBasedSubscriptionRegistry} with the {@link me.hippo.systems.lwjeb.subscription.populate.FieldBasedSubscriptionPopulator}.
+     */
+    public FieldBasedSubscriptionRegistry(){
+        super(SubscriptionPopulator.field());
+    }
+}

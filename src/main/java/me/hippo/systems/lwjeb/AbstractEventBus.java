@@ -61,6 +61,26 @@ public abstract class AbstractEventBus implements EventBus{
     }
 
     /**
+     * Registers {@code parent} to the event bus.
+     * @param parent  The parent to register.
+     * @return  If the registration was successful.
+     */
+    @Override
+    public boolean register(final Object parent) {
+        return registry.register(parent);
+    }
+
+    /**
+     * Unregisters {@code parent} from the event bus.
+     * @param parent  The parent to unregister.
+     * @return  If the unregistration was successful.
+     */
+    @Override
+    public boolean unregister(final Object parent) {
+        return registry.unregister(parent);
+    }
+
+    /**
      * Publishes an event.
      * <p>
      *     Gets all the subscriptions mapped to that event then invokes them.
