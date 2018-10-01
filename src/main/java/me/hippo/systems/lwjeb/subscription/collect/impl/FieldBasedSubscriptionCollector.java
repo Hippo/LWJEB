@@ -68,6 +68,7 @@ public enum FieldBasedSubscriptionCollector implements SubscriptionCollector {
                 if(!Listener.class.isAssignableFrom(field.getType())){
                     throw new SubscriptionCollectException("Error field '"+field.getName()+"', class '"+field.getDeclaringClass()+"' is not a listener!");
                 }
+                field.setAccessible(true);
                 final Listener listener = (Listener) field.get(parent);
                 final Class<?> event = TypeUtils.getArguments(field);
                 final FieldSubscription subscription = new FieldSubscription(listener, event);
