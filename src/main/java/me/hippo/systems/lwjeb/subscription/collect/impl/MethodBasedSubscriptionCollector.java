@@ -65,6 +65,7 @@ public enum MethodBasedSubscriptionCollector implements SubscriptionCollector {
                 if(method.getParameters().length != 1){
                     throw new SubscriptionCollectException("Error method '"+method.getName()+"', class '"+method.getDeclaringClass().getName()+"' does not meet the requirements for collection!");
                 }
+                method.setAccessible(true);
                 final MethodSubscription subscription = new MethodSubscription(parent, method, method.getParameters()[0].getType());
                 subscriptions.add(subscription);
             }
