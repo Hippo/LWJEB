@@ -208,7 +208,7 @@ package me.hippo.systems.lwjeb.lambda;
 
 /**
  * <h1>Event Invocation</h1>
- * A functional interface to invocation, with an instance (the parent) and a parameter (the event).
+ * A functional interface for invocation, with an instance (the parent) and a parameter (the event).
  *
  * @author Hippo
  * @since 1/3/2019
