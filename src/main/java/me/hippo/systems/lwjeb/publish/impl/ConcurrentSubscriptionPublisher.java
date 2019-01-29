@@ -203,195 +203,58 @@
  *
  */
 
-package me.hippo.systems.lwjeb;
+package me.hippo.systems.lwjeb.publish.impl;
 
-import me.hippo.systems.lwjeb.collector.SubscriptionCollector;
 import me.hippo.systems.lwjeb.exception.EventBusException;
 import me.hippo.systems.lwjeb.publish.SubscriptionPublisher;
-import me.hippo.systems.lwjeb.publish.impl.ConcurrentSubscriptionPublisher;
-import me.hippo.systems.lwjeb.publish.impl.ImmediateSubscriptionPublisher;
-import me.hippo.systems.lwjeb.registry.EventRegistry;
 import me.hippo.systems.lwjeb.registry.impl.ConcurrentEventRegistry;
-import me.hippo.systems.lwjeb.registry.impl.ImmediateEventRegistry;
 import me.hippo.systems.lwjeb.subscribe.Subscription;
-import me.hippo.systems.lwjeb.subscribe.impl.FieldBasedSubscription;
-import me.hippo.systems.lwjeb.subscribe.impl.MethodBasedSubscription;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * <h1>The EventBus</h1>
- * The {@link EventBus} is used for registration, and publishing events.
- * Easily configurable for multi-threaded applications.
- * <p>
- *     {@link #build()} must be called for the {@link EventBus} to be functional.
- * </p>
+ * <h1>The Concurrent Subscription Publish</h1>
+ * An implementation of {@link SubscriptionPublisher},
+ * publishes events using {@link ConcurrentEventRegistry}.
  *
  * @author Hippo
- * @since 11/6/2018
+ * @since 1/28/2019
  */
-public final class EventBus {
+public final class ConcurrentSubscriptionPublisher implements SubscriptionPublisher {
 
     /**
-     * The {@link EventRegistry}, used to register objects for collection.
+     * The {@link ConcurrentEventRegistry} instance.
      */
-    private EventRegistry registry;
+    private final ConcurrentEventRegistry registry;
 
     /**
-     * The {@link SubscriptionCollector}, used to collect {@link Subscription}s in objects.
-     */
-    private SubscriptionCollector collector;
-
-    /**
-     * The {@link SubscriptionPublisher}, used to publish events.
-     */
-    private SubscriptionPublisher publisher;
-
-
-    /**
-     * Simple {@link Boolean}s to determine if the {@link EventBus} should collect
-     * {@link MethodBasedSubscription} and/or {@link FieldBasedSubscription}.
-     * Also if the {@link EventBus} should be concurrent or not.
-     * <p>
-     *     In short terms, this is a marker.
-     * </p>
-     */
-    private boolean method, field, concurrent;
-
-    /**
-     * Registers {@code parent} to the {@link EventRegistry}.
+     * Creates a new {@link ConcurrentSubscriptionPublisher} with an {@link ConcurrentEventRegistry} instance.
      *
-     * @param parent  The object to register.
-     * @return  {@code this}.
+     * @param registry  The {@link ConcurrentEventRegistry}.
      */
-    public EventBus register(final Object parent){
-        if(registry == null){
-            throw new EventBusException("You must call EventBus#build before registering an object.");
-        }
-        registry.register(parent);
-        return this;
-    }
-
-    /**
-     * Unregisters {@code parent} from the {@link EventRegistry}.
-     * <p>
-     *     Once {@code parent} is unregistered it's {@link Subscription}s will no longer be used
-     *     until {@code parent} is registered again.
-     * </p>
-     * @param parent  The object to unregister.
-     * @return  {@code this}.
-     */
-    public EventBus unregister(final Object parent){
-        if(registry == null){
-            throw new EventBusException("You must call EventBus#build before unregistering an object.");
-        }
-        registry.unregister(parent);
-        return this;
+    public ConcurrentSubscriptionPublisher(final ConcurrentEventRegistry registry){
+        this.registry = registry;
     }
 
     /**
      * Publishes {@code event}.
-     *
-     * @param event  The event to publish.
-     * @return  {@code this}.
-     */
-    @SuppressWarnings("unchecked")
-    public EventBus publish(final Object event) {
-        publisher.publish(event);
-        return this;
-    }
-
-    /**
-     * Sets {@link #concurrent} to true.
-     *
-     * @return  {@code this.}
-     */
-    public EventBus concurrent(){
-        concurrent = true;
-        return this;
-    }
-
-    /**
-     * Sets {@link #concurrent} to false.
-     *
-     * @return  {@code this.}
-     */
-    public EventBus immediate(){
-        concurrent = false;
-        return this;
-    }
-
-    /**
-     * Sets the {@link #collector} to {@code collector}.
-     *
-     * @param collector  The collector.
-     * @return  {@code this}.
-     */
-    public EventBus collectWith(final SubscriptionCollector collector){
-        this.collector = collector;
-        return this;
-    }
-
-    /**
-     * Sets the {@link #publisher} to {@code publisher}.
-     *
-     * @param publisher  The publisher.
-     * @return  {@code this}.
-     */
-    public EventBus publishWith(final SubscriptionPublisher publisher){
-        this.publisher = publisher;
-        return this;
-    }
-
-    /**
-     * Sets {@link #method} to true.
      * <p>
-     *     This means the {@link SubscriptionCollector} will collect {@link java.lang.reflect.Method}s.
+     *     This will find all the {@link Subscription}s which event is equal to {@code event} and invoke it.
+     *     The {@link Subscription}s parent must be registered.
      * </p>
-     * @return  {@code this}.
-     */
-    public EventBus method(){
-        method = true;
-        return this;
-    }
-
-    /**
-     * Sets {@link #field} to true.
-     * <p>
-     *     This means the {@link SubscriptionCollector} will collect {@link java.lang.reflect.Field}s.
-     * </p>
-     * @return  {@code this}.
-     */
-    public EventBus field(){
-        field = true;
-        return this;
-    }
-
-    /**
-     * Builds the {@link EventBus} with the current configuration.
-     * <p>
-     *      If it is not specified weather to collect {@link java.lang.reflect.Method}s or {@link java.lang.reflect.Field}s
-     *      it will default to only collecting {@link java.lang.reflect.Method}s.
-     * </p>
-     * <p1>
-     *     The {@link EventRegistry} and {@link SubscriptionPublisher} will also be constructed.
-     * </p1>
      *
-     * @return  {@code this}.
+     * @param event  The event.
      */
-    public EventBus build(){
-        if(collector == null) {
-            if (!method && !field) {
-                method = true;
-            }
-            if (method && field) {
-                collector = SubscriptionCollector.methodAndField();
-            } else if (method) {
-                collector = SubscriptionCollector.method();
-            } else {
-                collector = SubscriptionCollector.field();
+    @Override
+    public void publish(final Object event) {
+        if(registry == null) {
+            throw new EventBusException("You must call EventBus#build before publishing an event.");
+        }
+        final CopyOnWriteArrayList<Subscription> subscriptions = registry.getEventMap().get(event.getClass());
+        if(subscriptions != null){
+            for(final Subscription subscription : subscriptions){
+                subscription.invoke(event);
             }
         }
-        this.registry = concurrent ? new ConcurrentEventRegistry(collector) : new ImmediateEventRegistry(collector);
-        this.publisher = concurrent ? new ConcurrentSubscriptionPublisher((ConcurrentEventRegistry)registry) : new ImmediateSubscriptionPublisher((ImmediateEventRegistry)registry);
-        return this;
     }
 }
