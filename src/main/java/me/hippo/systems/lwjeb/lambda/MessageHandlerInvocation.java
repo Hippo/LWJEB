@@ -20,18 +20,19 @@ package me.hippo.systems.lwjeb.lambda;
 
 /**
  * <h1>Event Invocation</h1>
- * A functional interface to invocation, with an instance (the parent) and a parameter (the event).
+ * A functional interface used to create a {@link java.lang.invoke.CallSite}.
  *
  * @author Hippo
  * @since 1/3/2019
  */
 @FunctionalInterface
-public interface EventInvocation {
+public interface MessageHandlerInvocation {
+
     /**
-     * Invokes the {@link EventInvocation}.
+     * Invokes the {@link MessageHandlerInvocation}.
      *
-     * @param parent  The instance.
-     * @param event  The parameter.
+     * @param parent  The parent.
+     * @param topic  The topic.
      */
-    void invoke(final Object parent, final Object event);
+    void invoke(Object parent, Object topic);
 }

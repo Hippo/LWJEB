@@ -15,44 +15,88 @@
  *
  */
 
-package me.hippo.systems.lwjeb.registry;
+package me.hippo.systems.lwjeb.subscribe;
 
-import me.hippo.systems.lwjeb.collect.TopicSubscriberCollector;
-import me.hippo.systems.lwjeb.subscriber.TopicSubscriber;
+import me.hippo.systems.lwjeb.collector.SubscriptionCollector;
+import me.hippo.systems.lwjeb.message.MessageHandler;
 
-import java.util.List;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 /**
+ * <h1>The Event Registry</h1>
+ * Provides an abstract framework to make event registries.
+ * An {@link ListenerSubscriber} must handle the (un)registration of objects.
+ *
  * @author Hippo
- * @since 06/21/2019
+ * @since 1/6/2018
+ * @param <T>  The type of list to store registered events in.
  */
-public abstract class EventRegistry<T extends List<TopicSubscriber>, S extends Map<Class<?>, T>> {
+public abstract class ListenerSubscriber<T extends List<MessageHandler>, S extends Map<Class<?>, T>> {
 
-    private final Map<Object, List<TopicSubscriber>> cacheMap;
-    private final TopicSubscriberCollector collector;
+    /**
+     * The cache map.
+     * <p>
+     *     Stores an object with all its {@link MessageHandler}s, they will remain in the cache even when the object is unsubscribed.
+     * </p>
+     */
+    private final Map<Object, List<MessageHandler>> cacheMap;
 
-    public EventRegistry(Map<Object, List<TopicSubscriber>> cacheMap, TopicSubscriberCollector collector) {
+    /**
+     * The {@link SubscriptionCollector}, used to me.hippo.systems.lwjeb.collect {@link MessageHandler}s in objects.
+     */
+    private final SubscriptionCollector collector;
+
+    /**
+     * Creates a new {@link ListenerSubscriber} with the desired collector and cache.
+     *
+     * @param collector  The collector.
+     * @param cacheMap  The cache.
+     */
+    public ListenerSubscriber(Map<Object, List<MessageHandler>> cacheMap, SubscriptionCollector collector) {
         this.cacheMap = cacheMap;
         this.collector = collector;
     }
 
-    public abstract void register(Object parent);
+    /**
+     * Subscribes the {@code parent}.
+     *
+     * @param parent  The object to subscribe.
+     */
+    public abstract void subscribe(Object parent);
 
-    public void unregister(Object parent) {
-        List<TopicSubscriber> cache = getCachedSubscribers(parent);
-        for (TopicSubscriber topicSubscriber : cache) {
-            List<TopicSubscriber> subscribers = getEventMap().get(topicSubscriber.getTopic());
-            if(subscribers != null) {
-                getEventMap().values().removeIf(subscribers::equals);
+    /**
+     * Unsubscribes the {@code parent}.
+     *
+     * @param parent  The object to unsubscribe.
+     */
+    public void unsubscribe(Object parent){
+        List<MessageHandler> cache = getCachedMessageHanlders(parent);
+        for (MessageHandler messageHandler : cache) {
+            List<MessageHandler> messageHandlers = getEventMap().get(messageHandler.getTopic());
+            if(messageHandlers != null) {
+                getEventMap().values().removeIf(messageHandlers::equals);
             }
         }
     }
 
-    protected List<TopicSubscriber> getCachedSubscribers(Object parent) {
+    /**
+     * Gets all the {@link MessageHandler}s from {@code parent} in the cache map.
+     * <p>
+     *     If the {@code parent} is not in the cache it will me.hippo.systems.lwjeb.collect all the {@link MessageHandler}s and store it in there.
+     * </p>
+     *
+     * @param parent  The parent to get the cached {@link MessageHandler}s.
+     * @return  The cached {@link MessageHandler}s.
+     */
+    protected final List<MessageHandler> getCachedMessageHanlders(Object parent){
         return cacheMap.computeIfAbsent(parent, collector::collect);
     }
 
+    /**
+     * Gets the event map.
+     *
+     * @return  The event map.
+     */
     public abstract S getEventMap();
+
 }

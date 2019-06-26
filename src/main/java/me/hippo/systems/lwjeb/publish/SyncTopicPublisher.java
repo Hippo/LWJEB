@@ -17,30 +17,21 @@
 
 package me.hippo.systems.lwjeb.publish;
 
-import me.hippo.systems.lwjeb.exception.EventBusException;
-import me.hippo.systems.lwjeb.message.ListenerSubscriber;
-import me.hippo.systems.lwjeb.message.impl.ImmediateListenerSubscriber;
 import me.hippo.systems.lwjeb.message.MessageHandler;
 import me.hippo.systems.lwjeb.subscribe.ListenerSubscriber;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <h1>The Immediate MessageHandler Publish</h1>
- * An implementation of {@link SubscriptionPublisher},
- * publishes events using {@link ImmediateListenerSubscriber}.
+ * <h1>The Sync MessageHandler Publish</h1>
+ * Post messages to the {@link me.hippo.systems.lwjeb.EventBus}.
  *
  * @author Hippo
- * @since 1/28/2019
+ * @since 06/23/2019
  */
-public final class ImmediateSubscriptionPublisher {
+public final class SyncTopicPublisher {
 
-
-    /**
-     * Creates a new {@link ImmediateSubscriptionPublisher} with an {@link ImmediateListenerSubscriber} instance.
-     */
-    private ImmediateSubscriptionPublisher(){
+    private SyncTopicPublisher(){
     }
 
     /**
@@ -48,11 +39,11 @@ public final class ImmediateSubscriptionPublisher {
      *
      * @param topic  The message topic.
      */
-    public void post(Object topic, ListenerSubscriber subscriber) {
+    public static void post(Object topic, ListenerSubscriber<?, ?> subscriber) {
         List<MessageHandler> messageHandlers = subscriber.getEventMap().get(topic.getClass());
         if(messageHandlers != null){
             for(MessageHandler messageHandler : messageHandlers){
-                messageHandler.invoke(event);
+                messageHandler.invoke(topic);
             }
         }
     }

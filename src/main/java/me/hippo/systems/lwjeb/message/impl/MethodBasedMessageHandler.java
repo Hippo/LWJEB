@@ -15,22 +15,25 @@
  *
  */
 
-package me.hippo.systems.lwjeb.subscribe.impl;
+package me.hippo.systems.lwjeb.message.impl;
 
-import me.hippo.systems.lwjeb.lambda.EventInvocation;
-import me.hippo.systems.lwjeb.subscribe.Subscription;
+import me.hippo.systems.lwjeb.lambda.MessageHandlerInvocation;
+import me.hippo.systems.lwjeb.lambda.MessageHandlerInvocationFactory;
+import me.hippo.systems.lwjeb.message.MessageHandler;
+
+import java.lang.reflect.Method;
 
 
 /**
- * <h1>The Method Based Subscription</h1>
- * This is an implementation of {@link Subscription},
+ * <h1>The Method Based MessageHandler</h1>
+ * This is an implementation of {@link MessageHandler},
  * this is based around {@link java.lang.reflect.Method}s,
  * they are invoked using the {@link java.lang.invoke.LambdaMetafactory}.
  *
  * @author Hippo
  * @since 11/6/2018
  */
-public final class MethodBasedSubscription extends Subscription {
+public final class MethodBasedMessageHandler extends MessageHandler {
 
     /**
      * The object that the method is associated with.
@@ -38,30 +41,28 @@ public final class MethodBasedSubscription extends Subscription {
     private final Object parent;
 
     /**
-     * The {@link EventInvocation}, invokes the method.
+     * The {@link MessageHandlerInvocation}, invokes the method.
      */
-    private final EventInvocation invoker;
+    private final MessageHandlerInvocation invoker;
 
     /**
-     * Creates a new {@link MethodBasedSubscription} with the desired parent, invoker, and event.
+     * Creates a new {@link MethodBasedMessageHandler} with the desired parent, topic and method.
      *
      * @param parent  The parent.
-     * @param invoker  The invoker.
-     * @param event  The event.
+     * @param topic  The topic.
+     * @param method  The method.
      */
-    public MethodBasedSubscription(final Object parent, final EventInvocation invoker, final Class<?> event) {
-        super(event);
+    public MethodBasedMessageHandler(Object parent, Class<?> topic, Method method) {
+        super(topic);
         this.parent = parent;
-        this.invoker = invoker;
+        this.invoker = MessageHandlerInvocationFactory.create(method);
     }
 
     /**
-     * Invokes the {@link MethodBasedSubscription} with the {@link #parent} as the instance and {@code event} as the parameter.
-     *
-     * @param event  The event.
+     * @InheritDoc
      */
     @Override
-    public void invoke(final Object event) {
-        invoker.invoke(parent, event);
+    public void invoke(Object topic) {
+        invoker.invoke(parent, topic);
     }
 }

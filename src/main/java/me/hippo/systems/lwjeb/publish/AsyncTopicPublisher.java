@@ -17,34 +17,25 @@
 
 package me.hippo.systems.lwjeb.publish;
 
-import me.hippo.systems.lwjeb.exception.EventBusException;
 import me.hippo.systems.lwjeb.message.MessageHandler;
-import me.hippo.systems.lwjeb.message.impl.ConcurrentListenerSubscriber;
 import me.hippo.systems.lwjeb.subscribe.ListenerSubscriber;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
- * <h1>The Concurrent MessageHandler Publish</h1>
+ * <h1>The Async MessageHandler Publish</h1>
+ * Post messages to the {@link me.hippo.systems.lwjeb.EventBus}.
  *
  * @author Hippo
- * @since 1/28/2019
+ * @since 06/23/2019
  */
-public final class AsycTopicPublisher implements SubscriptionPublisher {
+public final class AsyncTopicPublisher {
 
-    /**
-     * The {@link ConcurrentListenerSubscriber} instance.
-     */
-    private final ConcurrentListenerSubscriber registry;
+    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    /**
-     * Creates a new {@link AsycTopicPublisher} with an {@link ConcurrentListenerSubscriber} instance.
-     *
-     * @param registry  The {@link ConcurrentListenerSubscriber}.
-     */
-    public AsycTopicPublisher(final ConcurrentListenerSubscriber registry){
-        this.registry = registry;
+    private AsyncTopicPublisher(){
     }
 
     /**
@@ -53,11 +44,30 @@ public final class AsycTopicPublisher implements SubscriptionPublisher {
      * @param topic  The message topic.
      */
     public static void post(Object topic, ListenerSubscriber<?, ?> subscriber) {
-        List<MessageHandler> messageHandlers = subscriber.getEventMap().get(topic.getClass());
-        if(messageHandlers != null){
-            for(MessageHandler messageHandler : messageHandlers){
-                messageHandler.invoke(topic);
-            }
+        try {
+            executorService.execute(() -> SyncTopicPublisher.post(topic, subscriber));
+        }catch (RejectedExecutionException e) {
+            e.printStackTrace();
+            System.err.println("Is the eventbus shutdown?");
         }
+    }
+
+    /**
+     * Sets how many threads the {@link #executorService} will use.
+     *
+     * @param threads  The number of threads.
+     */
+    public static void setThreads(int threads) {
+        if(threads <= 0) {
+            throw new IllegalArgumentException("Thread count must be greater than 0.");
+        }
+        executorService = Executors.newFixedThreadPool(threads);
+    }
+
+    /**
+     * Shuts down the {@link #executorService}.
+     */
+    public static void shutdown() {
+        executorService.shutdown();
     }
 }

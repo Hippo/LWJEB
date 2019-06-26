@@ -15,68 +15,49 @@
  *
  */
 
-package me.hippo.systems.lwjeb.message.impl;
+package me.hippo.systems.lwjeb.subscribe.impl;
 
 import me.hippo.systems.lwjeb.collector.SubscriptionCollector;
-import me.hippo.systems.lwjeb.message.EventRegistry;
+import me.hippo.systems.lwjeb.subscribe.ListenerSubscriber;
 import me.hippo.systems.lwjeb.message.MessageHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * <h1>The Immediate Event Registry</h1>
- * An implementation of {@link EventRegistry},
- * stores registered events in {@link CopyOnWriteArrayList}.
+ * <h1>The Concurrent Listener Subscriber</h1>
+ * An implementation of {@link ListenerSubscriber},
+ * stores message handlers in {@link CopyOnWriteArrayList}.
  *
  * @author Hippo
  * @since 1/6/2019
  */
-public final class ConcurrentEventRegistry extends EventRegistry<CopyOnWriteArrayList<MessageHandler>> {
+public final class ConcurrentListenerSubscriber extends ListenerSubscriber<CopyOnWriteArrayList<MessageHandler>, ConcurrentHashMap<Class<?>, CopyOnWriteArrayList<MessageHandler>>> {
 
-    /**
-     * The event map.
-     */
-    private final HashMap<Class<?>, CopyOnWriteArrayList<MessageHandler>> eventMap = new HashMap<>();
+    private final ConcurrentHashMap<Class<?>, CopyOnWriteArrayList<MessageHandler>> eventMap;
 
-    /**
-     * Creates a new {@link ConcurrentEventRegistry} with the desired collector.
-     *
-     * @param collector  The collector.
-     */
-    public ConcurrentEventRegistry(final SubscriptionCollector collector) {
-        super(collector);
+    public ConcurrentListenerSubscriber(SubscriptionCollector collector) {
+        super(new ConcurrentHashMap<>(), collector);
+        this.eventMap = new ConcurrentHashMap<>();
     }
 
     /**
-     * Registers {@code parent}.
-     * <p>
-     *     Loops through the cached {@link MessageHandler}s,
-     *     then adds it to the {@link CopyOnWriteArrayList} that is mapped to the event class,
-     *     if the {@link CopyOnWriteArrayList} doesn't exist it will create one.
-     * </p>
-     *
-     * @param parent  The object to register.
+     * @InheritDoc
      */
     @Override
-    public void register(final Object parent) {
-        for(final MessageHandler messageHandler : getCachedSubscriptions(parent)){
-            eventMap.computeIfAbsent(messageHandler.getEvent(), ignored -> new CopyOnWriteArrayList<>()).add(messageHandler);
+    public void subscribe(Object parent) {
+        for(MessageHandler messageHandler : getCachedMessageHanlders(parent)){
+            eventMap.computeIfAbsent(messageHandler.getTopic(), ignored -> new CopyOnWriteArrayList<>()).add(messageHandler);
         }
     }
 
     /**
-     * Gets the event map.
-     * <p>
-     *     Maps a class (the event) to a {@link CopyOnWriteArrayList} of {@link MessageHandler}s.
-     *     The {@link MessageHandler}s will be registered under the event.
-     * </p>
-     *
-     * @return  The event map.
+     * @InheritDoc
      */
     @Override
-    public Map<Class<?>, CopyOnWriteArrayList<MessageHandler>> getEventMap() {
+    public ConcurrentHashMap<Class<?>, CopyOnWriteArrayList<MessageHandler>> getEventMap() {
         return eventMap;
     }
 }

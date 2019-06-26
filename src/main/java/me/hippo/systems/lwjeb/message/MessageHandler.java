@@ -15,46 +15,44 @@
  *
  */
 
-package me.hippo.systems.lwjeb.subscribe;
+package me.hippo.systems.lwjeb.message;
 
 /**
- * <h1>The Subscription</h1>
- * * An abstract framework to make {@link Subscription}s.
- * * Each {@link Subscription} must implement {@link #invoke(Object)},
- * * they all have an event that they are subscribed to.
+ * <h1>The MessageHandler</h1>
+ * A message handler is an object that will execute some code via {@link #invoke(Object)} when a message is posted to the {@link #getTopic()}.
  *
  * @author Hippo
  * @since 11/6/2018
  */
-public abstract class Subscription {
+public abstract class MessageHandler {
 
     /**
-     * The event that the {@link Subscription} is subscribed to.
+     * The topic that the {@link MessageHandler} is listening for.
      */
-    private final Class<?> event;
+    private final Class<?> topic;
 
     /**
-     * Creates a new {@link Subscription} with the desired event.
+     * Creates a new {@link MessageHandler} with the desired topic.
      *
-     * @param event  The event.
+     * @param topic  The topic.
      */
-    public Subscription(final Class<?> event) {
-        this.event = event;
+    public MessageHandler(Class<?> topic) {
+        this.topic = topic;
     }
 
     /**
-     * Invokes the subscription.
+     * Invokes the handler.
      *
-     * @param event  The event.
+     * @param topic  The topic.
      */
-    public abstract void invoke(final Object event);
+    public abstract void invoke(Object topic);
 
     /**
-     * Gets get event.
+     * Gets get topic.
      *
-     * @return  The event.
+     * @return  The topic.
      */
-    public final Class<?> getEvent(){
-        return event;
+    public Class<?> getTopic(){
+        return topic;
     }
 }

@@ -15,37 +15,52 @@
  *
  */
 
-package me.hippo.systems.lwjeb.registry.impl;
+package me.hippo.systems.lwjeb.subscribe.impl;
 
-import me.hippo.systems.lwjeb.collect.TopicSubscriberCollector;
-import me.hippo.systems.lwjeb.registry.EventRegistry;
-import me.hippo.systems.lwjeb.subscriber.TopicSubscriber;
+import me.hippo.systems.lwjeb.collector.SubscriptionCollector;
+import me.hippo.systems.lwjeb.subscribe.ListenerSubscriber;
+import me.hippo.systems.lwjeb.message.MessageHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
+ * <h1>The Immediate Listener Subscriber</h1>
+ * An implementation of {@link ListenerSubscriber},
+ * stores message handlers in {@link ArrayList}.
+ *
  * @author Hippo
- * @since 06/22/2019
+ * @since 1/6/2019
  */
-public final class ImmediateEventRegistry extends EventRegistry<ArrayList<TopicSubscriber>, HashMap<Class<?>, ArrayList<TopicSubscriber>>> {
+public final class ImmediateListenerSubscriber extends ListenerSubscriber<ArrayList<MessageHandler>, HashMap<Class<?>, ArrayList<MessageHandler>>> {
 
-    private final HashMap<Class<?>, ArrayList<TopicSubscriber>> eventMap;
+    private final HashMap<Class<?>, ArrayList<MessageHandler>> eventMap;
 
-    public ImmediateEventRegistry(TopicSubscriberCollector collector) {
+
+    /**
+     * @InheritDoc
+     */
+    public ImmediateListenerSubscriber(SubscriptionCollector collector) {
         super(new HashMap<>(), collector);
         this.eventMap = new HashMap<>();
     }
 
+
+    /**
+     * @InheritDoc
+     */
     @Override
-    public void register(Object parent) {
-        List<TopicSubscriber> cache = getCachedSubscribers(parent);
-        for (TopicSubscriber topicSubscriber : cache) {
-            eventMap.computeIfAbsent(topicSubscriber.getTopic(),  ignored -> new ArrayList<>()).add(topicSubscriber);
+    public void subscribe(Object parent) {
+        for(MessageHandler messageHandler : getCachedMessageHanlders(parent)){
+            eventMap.computeIfAbsent(messageHandler.getTopic(), ignored -> new ArrayList<>()).add(messageHandler);
         }
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
-    public HashMap<Class<?>, ArrayList<TopicSubscriber>> getEventMap() {
+    public HashMap<Class<?>, ArrayList<MessageHandler>> getEventMap() {
         return eventMap;
     }
 }

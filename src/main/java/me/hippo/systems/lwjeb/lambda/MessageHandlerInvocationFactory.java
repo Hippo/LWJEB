@@ -22,26 +22,26 @@ import java.lang.reflect.Method;
 
 /**
  * <h1>The Event Lambda Factory</h1>
- * Produces {@link EventInvocation}s, used for invocation via {@link LambdaMetafactory}.
+ * Produces {@link MessageHandlerInvocation}s, used for invocation via {@link LambdaMetafactory}.
  *
  * @author Hippo
  * @since 1/4/2019
  */
-public final class EventLambdaFactory {
+public final class MessageHandlerInvocationFactory {
 
     /**
-     * Creates a {@link EventInvocation} from a {@link Method}.
+     * Creates a {@link MessageHandlerInvocation} from a {@link Method}.
      *
      * @param method  The {@link Method}.
-     * @return  The {@link EventInvocation}.
+     * @return  The {@link MessageHandlerInvocation}.
      */
-    public static EventInvocation create(final Method method){
+    public static MessageHandlerInvocation create(Method method){
         try {
-            final MethodHandles.Lookup lookup = MethodHandles.lookup();
-            final MethodType invokedType = MethodType.methodType(EventInvocation.class);
-            final MethodHandle implMethod = lookup.unreflect(method);
-            final MethodType instantiatedMethodType = implMethod.type();
-            final MethodType samMethodType = instantiatedMethodType.changeParameterType(0, Object.class).changeParameterType(1, Object.class);
+            MethodHandles.Lookup lookup = MethodHandles.lookup();
+            MethodType invokedType = MethodType.methodType(MessageHandlerInvocation.class);
+            MethodHandle implMethod = lookup.unreflect(method);
+            MethodType instantiatedMethodType = implMethod.type();
+            MethodType samMethodType = instantiatedMethodType.changeParameterType(0, Object.class).changeParameterType(1, Object.class);
 
             CallSite callSite = LambdaMetafactory.metafactory(
                     lookup,
@@ -52,7 +52,7 @@ public final class EventLambdaFactory {
                     instantiatedMethodType
             );
 
-            return (EventInvocation)callSite.getTarget().invoke();
+            return (MessageHandlerInvocation)callSite.getTarget().invoke();
         }catch (Throwable e){
             e.printStackTrace();
         }

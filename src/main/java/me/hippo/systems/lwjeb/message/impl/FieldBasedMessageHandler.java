@@ -15,46 +15,44 @@
  *
  */
 
-package me.hippo.systems.lwjeb.subscribe.impl;
+package me.hippo.systems.lwjeb.message.impl;
 
 import me.hippo.systems.lwjeb.listener.Listener;
-import me.hippo.systems.lwjeb.subscribe.Subscription;
+import me.hippo.systems.lwjeb.message.MessageHandler;
 
 /**
- * <h1>The Field Based Subscription</h1>
- * This is an implementation of {@link Subscription},
+ * <h1>The Field Based MessageHandler</h1>
+ * This is an implementation of {@link MessageHandler},
  * this is based around {@link java.lang.reflect.Field}s,
  * which are wrapped by {@link Listener}.
  *
  * @author Hippo
  * @since 1/5/2019
  */
-public final class FieldBasedSubscription extends Subscription {
+public final class FieldBasedMessageHandler extends MessageHandler {
 
     /**
-     * The lister that is associated with the {@link FieldBasedSubscription}.
+     * The lister that is associated with the {@link FieldBasedMessageHandler}.
      */
     private final Listener listener;
 
     /**
-     * Creates a new {@link FieldBasedSubscription} with the desired listener and event.
+     * Creates a new {@link FieldBasedMessageHandler} with the desired listener and topic.
      *
      * @param listener  The listener.
-     * @param event  The event.
+     * @param topic  The topic.
      */
-    public FieldBasedSubscription(final Listener<?> listener, final Class<?> event) {
-        super(event);
+    public FieldBasedMessageHandler(Listener listener, Class<?> topic) {
+        super(topic);
         this.listener = listener;
     }
 
     /**
-     * Invoked the {@link FieldBasedSubscription}.
-     *
-     * @param event  The event.
+     * @InheritDoc
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void invoke(final Object event) {
-        listener.invoke(event);
+    public void invoke(Object topic) {
+        listener.invoke(topic);
     }
 }
