@@ -15,20 +15,23 @@
  *
  */
 
-package annotation;
+package me.hippo.systems.lwjeb.lambda;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
- * <h1>The Collect Annotation</h1>
- * Used as a marker for collection.
+ * <h1>Event Invocation</h1>
+ * A functional interface to invocation, with an instance (the parent) and a parameter (the event).
  *
  * @author Hippo
- * @since 11/6/2018
+ * @since 1/3/2019
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface Collect {}
+@FunctionalInterface
+public interface EventInvocation {
+    /**
+     * Invokes the {@link EventInvocation}.
+     *
+     * @param parent  The instance.
+     * @param event  The parameter.
+     */
+    void invoke(final Object parent, final Object event);
+}

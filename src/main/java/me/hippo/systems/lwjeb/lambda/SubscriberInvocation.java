@@ -15,20 +15,14 @@
  *
  */
 
-package annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package lambda;
 
 /**
- * <h1>The Collect Annotation</h1>
- * Used as a marker for collection.
- *
  * @author Hippo
- * @since 11/6/2018
+ * @since 06/19/2019
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface Collect {}
+@FunctionalInterface
+public interface SubscriberInvocation {
+
+    void invoke(Object parent, Object event);
+}

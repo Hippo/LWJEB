@@ -15,20 +15,22 @@
  *
  */
 
-package annotation;
+package collect;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import collect.impl.MethodBasedTopicSubscriberCollector;
+import subscriber.TopicSubscriber;
+
+import java.util.Set;
 
 /**
- * <h1>The Collect Annotation</h1>
- * Used as a marker for collection.
- *
  * @author Hippo
- * @since 11/6/2018
+ * @since 06/19/2019
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface Collect {}
+@FunctionalInterface
+public interface TopicSubscriberCollector {
+    Set<TopicSubscriber> collect(Object parent);
+
+    static TopicSubscriberCollector method() {
+        return MethodBasedTopicSubscriberCollector.INSTANCE;
+    }
+}

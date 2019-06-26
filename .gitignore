@@ -1,0 +1,9 @@
+idea/
+release/
+out/
+gradle/
+build/
+archive/
+mvn/
+.idea/
+.gradle/

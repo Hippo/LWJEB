@@ -15,20 +15,31 @@
  *
  */
 
-package annotation;
+package me.hippo.systems.lwjeb.subscriber;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.function.Predicate;
 
 /**
- * <h1>The Collect Annotation</h1>
- * Used as a marker for collection.
- *
  * @author Hippo
- * @since 11/6/2018
+ * @since 06/19/2019
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface Collect {}
+public abstract class TopicSubscriber {
+
+    private final Class<?> topic;
+    private final Predicate<Class<?>> filter;
+
+    public TopicSubscriber(Class<?> topic) {
+        this.topic = topic;
+        this.filter = topic::equals;
+    }
+
+    public abstract void invoke(Object event);
+
+    public boolean passesFilter(Class<?> topic) {
+        return filter.test(topic);
+    }
+
+    public Class<?> getTopic() {
+        return topic;
+    }
+}
