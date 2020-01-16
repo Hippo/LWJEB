@@ -15,20 +15,18 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.testing.lwjeb.filter;
 
-group 'Hippo'
-version '5.0.0'
+import me.hippo.api.lwjeb.filter.MessageFilter;
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+/**
+ * @author Hippo
+ * @version 5.0.0, 1/13/20
+ * @since 5.0.0
+ */
+public final class StringCasingFilter implements MessageFilter<String> {
+    @Override
+    public boolean passes(String topic) {
+        return topic.toLowerCase().equals(topic);
+    }
 }

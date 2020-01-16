@@ -15,20 +15,26 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.configuration.exception.handle.impl;
 
-group 'Hippo'
-version '5.0.0'
+import me.hippo.api.lwjeb.configuration.exception.handle.ExceptionHandler;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/30/19
+ * @since 5.0.0
+ *
+ * The standard handler simply just prints the stack trace.
+ */
+public enum StandardExceptionHandler implements ExceptionHandler {
+    INSTANCE;
 
-repositories {
-    mavenCentral()
-}
 
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void handleException(Throwable t) {
+        t.printStackTrace();
+    }
 }

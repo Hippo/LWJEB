@@ -15,20 +15,28 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.annotation;
 
-group 'Hippo'
-version '5.0.0'
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/2/19
+ * @since 5.0.0
+ *
+ * Marks a handler as a wropped type.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {ElementType.METHOD, ElementType.FIELD})
+public @interface Wrapped {
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * The types that allow a handler to be invoked.
+     *
+     * @return  The types.
+     */
+    Class<?>[] value();
 }

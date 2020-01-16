@@ -15,20 +15,24 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.bus.publish;
 
-group 'Hippo'
-version '5.0.0'
+import me.hippo.api.lwjeb.bus.MessageBus;
+import me.hippo.api.lwjeb.message.publish.MessagePublisher;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/26/19
+ * @since 5.0.0
+ *
+ * A publish bus extends the functionality to allow topics to be published.
+ */
+public interface PublishMessageBus<T> extends MessageBus {
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * Gets the publisher.
+     *
+     * @return  The publisher.
+     */
+    MessagePublisher<T> getPublisher();
 }

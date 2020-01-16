@@ -7,3 +7,4 @@ archive/
 mvn/
 .idea/
 .gradle/
+.DS_STORE

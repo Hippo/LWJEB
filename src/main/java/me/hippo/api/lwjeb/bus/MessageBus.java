@@ -15,20 +15,32 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.bus;
 
-group 'Hippo'
-version '5.0.0'
+import me.hippo.api.lwjeb.configuration.BusConfigurations;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/1/19
+ * @since 5.0.0
+ *
+ * A message bus is a configurable bus.
+ */
+@FunctionalInterface
+public interface MessageBus {
 
-repositories {
-    mavenCentral()
-}
+    /**
+     * Gets the current configuration.
+     * @return
+     */
+    BusConfigurations getConfigurations();
 
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * Gets the identifier, you can use this to identify multiple different busses.
+     *
+     * @return  The identifier.
+     */
+    default String getIdentifier() {
+        return "LWJEB";
+    }
 }

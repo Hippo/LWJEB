@@ -15,20 +15,21 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.annotation;
 
-group 'Hippo'
-version '5.0.0'
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/2/19
+ * @since 5.0.0
+ *
+ * Marks a method or field as a handler.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {ElementType.METHOD, ElementType.FIELD})
+public @interface Handler {
 }

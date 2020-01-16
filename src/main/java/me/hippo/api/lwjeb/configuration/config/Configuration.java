@@ -15,20 +15,22 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.configuration.config;
 
-group 'Hippo'
-version '5.0.0'
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/26/19
+ * @since 5.0.0
+ *
+ * A configuration helps configure the bus to your exact likings.
+ */
+@FunctionalInterface
+public interface Configuration<T extends Configuration> {
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * Gets the default configuration.
+     *
+     * @return  The default configuration
+     */
+    T provideDefault();
 }

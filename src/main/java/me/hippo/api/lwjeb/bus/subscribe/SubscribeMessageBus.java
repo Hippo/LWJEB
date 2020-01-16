@@ -15,20 +15,24 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.bus.subscribe;
 
-group 'Hippo'
-version '5.0.0'
+import me.hippo.api.lwjeb.bus.MessageBus;
+import me.hippo.api.lwjeb.subscribe.ListenerSubscriber;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/1/19
+ * @since 5.0.0
+ *
+ * A subscribe bus extends the functionality to allow objects to be subscribed.
+ */
+public interface SubscribeMessageBus<T> extends MessageBus {
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * Gets the subscriber.
+     *
+     * @return  The subscriber.
+     */
+    ListenerSubscriber<T> getSubscriber();
 }

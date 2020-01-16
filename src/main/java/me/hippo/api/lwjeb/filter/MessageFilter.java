@@ -15,20 +15,23 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.filter;
 
-group 'Hippo'
-version '5.0.0'
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/2/19
+ * @since 5.0.0
+ *
+ * A message filter checks if a topic meets all the requirements to be invoked.
+ */
+@FunctionalInterface
+public interface MessageFilter<T> {
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * Checks if the {@code topic} passes the filter.
+     *
+     * @param topic  The topic.
+     * @return  Weather if it passes.
+     */
+    boolean passes(T topic);
 }

@@ -15,20 +15,22 @@
  *
  */
 
-plugins {
-    id 'java'
-}
+package me.hippo.api.lwjeb.configuration.exception.handle;
 
-group 'Hippo'
-version '5.0.0'
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/30/19
+ * @since 5.0.0
+ *
+ * An exception handler handles exceptions, gives you more control on how your errors are handled.
+ */
+@FunctionalInterface
+public interface ExceptionHandler {
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.ow2.asm', name: 'asm', version: '7.1'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '7.1'
+    /**
+     * Handles the exception.
+     *
+     * @param t  The exception.
+     */
+    void handleException(Throwable t);
 }
