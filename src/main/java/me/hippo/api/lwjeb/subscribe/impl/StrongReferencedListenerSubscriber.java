@@ -42,7 +42,7 @@ public final class StrongReferencedListenerSubscriber<T> extends AbstractListene
      */
     private final ConcurrentHashMap<Class<T>, CopyOnWriteArrayList<MessageHandler<T>>> subscriberMap;
 
-    public StrongReferencedListenerSubscriber(MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
+    public StrongReferencedListenerSubscriber() {
         this.subscriberMap = new ConcurrentHashMap<>();
     }
 

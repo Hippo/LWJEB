@@ -29,13 +29,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author Hippo
- * @version 5.0.0, 10/27/19
+ * @version 5.0.1, 10/27/19
  * @since 5.0.0
  *
  * An abstract implementation of an asynchronous publish bus and a message bus, this implements methods that typically wont change.
@@ -144,7 +142,31 @@ public abstract class AbstractAsynchronousPubSubMessageBus<T> implements Asynchr
      * @inheritDoc
      */
     @Override
+    public void shutdown(int delay, TimeUnit timeUnit) {
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.schedule(() -> {
+            shutdown = true;
+            new Thread(() -> {
+                while (!resultQueue.isEmpty());
+
+                for (Thread dispatcher : dispatchers) {
+                    dispatcher.interrupt();
+                }
+            }, String.format("(%s) Shutdown", getIdentifier())).start();
+        }, delay, timeUnit);
+        scheduledExecutorService.shutdown();
+    }
+
+    @Override
     public void shutdown() {
+        shutdown(250, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void forceShutdown() {
         shutdown = true;
         for (Thread dispatcher : dispatchers) {
             dispatcher.interrupt();

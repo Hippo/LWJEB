@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Hippo
- * @version 5.0.0, 10/26/19
+ * @version 5.0.1, 10/26/19
  * @since 5.0.0
  *
  * An asynchronous publisher allows messages to be published asynchronously.
@@ -57,11 +57,25 @@ public interface AsynchronousPublishMessageBus<T> extends PublishMessageBus<T> {
     void addMessage(MessagePublicationResult<T> result, long timeout, TimeUnit timeUnit);
 
     /**
-     * Shuts down all the dispatchers.
+     * Shuts down all the dispatchers once no tasks are left to complete, there is also a delay to ensure no last minute tasks are being scheduled.
      *
      * <p>
      *     This is only used if the dispatchers have been started.
+     *     Default time is 250ms.
      * </p>
      */
     void shutdown();
+
+    /**
+     * Shuts down all the dispatchers once the time limit has reached.
+     *
+     * @param delay  The delay.
+     * @param timeUnit  The unit.
+     */
+    void shutdown(int delay, TimeUnit timeUnit);
+
+    /**
+     * Forcefully shuts down all dispatchers disregarding if there is uncompleted tasks or not.
+     */
+    void forceShutdown();
 }
