@@ -41,7 +41,7 @@ public enum StandardMethodTest {
     @Handler
     public void onMessage(String message) {
         System.out.println(message);
-        System.out.println(Thread.currentThread().getName());
     }
+
 
 }

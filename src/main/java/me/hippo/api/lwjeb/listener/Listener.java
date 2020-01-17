@@ -26,6 +26,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 
 /**
@@ -61,8 +62,10 @@ public interface Listener {
      * @return  The dynamic listener.
      */
     static Listener of(Class<?> parent, Method method, Class<?> topic, ExceptionHandlingConfiguration exceptionHandlingConfiguration) {
+
         ClassNode classNode = new ClassNode();
-        classNode.visit(V1_8, ACC_PUBLIC + ACC_SUPER + ACC_FINAL, "lwjeb/generated/" + parent.getName().replace('.', '/') + "/" + method.getName(), null, "java/lang/Object", new String[]{Listener.class.getName().replace('.', '/')}); //Sets the class name, access, and listeners.
+
+        classNode.visit(V1_8, ACC_PUBLIC + ACC_SUPER + ACC_FINAL, "lwjeb/generated/" + parent.getName().replace('.', '/') + "/" + getUniqueMethodName(method), null, "java/lang/Object", new String[]{Listener.class.getName().replace('.', '/')}); //Sets the class name, access, and listeners.
         classNode.methods = new ArrayList<>();
 
         /*Creates a default constructor, just super()*/
@@ -94,5 +97,19 @@ public interface Listener {
             return method::invoke;
         }
 
+    }
+
+    /**
+     * Gets a unique method name from a method instance.
+     *
+     * @param method  The method.
+     * @return  The unique name.
+     */
+    static String getUniqueMethodName(Method method) {
+        StringBuilder parameters = new StringBuilder();
+        for (Parameter parameter : method.getParameters()) {
+            parameters.append(parameter.getType().getName().replace('.', '_'));
+        }
+        return method.getName() + parameters.toString();
     }
 }
