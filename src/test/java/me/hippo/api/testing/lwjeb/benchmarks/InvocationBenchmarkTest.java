@@ -43,6 +43,8 @@ public final class InvocationBenchmarkTest {
                     return busPubSubConfiguration;
                 }
         ).build());
+        
+        pubSub.subscribe(this);
 
         pubSub.subscribe(this);
 
