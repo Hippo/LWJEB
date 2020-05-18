@@ -25,10 +25,7 @@ import me.hippo.api.lwjeb.configuration.config.impl.BusConfiguration;
 import me.hippo.api.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
 import me.hippo.api.lwjeb.message.result.MessagePublicationResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -81,15 +78,14 @@ public abstract class AbstractAsynchronousPubSubMessageBus<T> implements Asynchr
      * @param busConfigurations  The configurations.
      */
     public AbstractAsynchronousPubSubMessageBus(BusConfigurations busConfigurations) {
-        this.dispatchers = new ArrayList<>();
-        this.resultQueue = new LinkedBlockingQueue<>();
         this.busConfigurations = busConfigurations;
-
 
         this.asynchronousPublicationConfiguration = busConfigurations.get(AsynchronousPublicationConfiguration.class);
         this.exceptionHandlingConfiguration = busConfigurations.get(ExceptionHandlingConfiguration.class);
         this.busConfiguration = busConfigurations.get(BusConfiguration.class);
 
+        this.dispatchers = new ArrayList<>(asynchronousPublicationConfiguration.getDispatcherCount());
+        this.resultQueue = new LinkedBlockingQueue<>();
     }
 
     /**

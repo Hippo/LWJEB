@@ -25,6 +25,7 @@ import me.hippo.api.lwjeb.filter.MessageFilter;
  * @since 5.0.0
  */
 public final class StringCasingFilter implements MessageFilter<String> {
+
     @Override
     public boolean passes(String topic) {
         return topic.toLowerCase().equals(topic);

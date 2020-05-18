@@ -50,5 +50,5 @@ public enum StandardFieldTest {
 
 
     @Handler
-    public final Consumer<String> onMessage = System.out::println;
+    private final Consumer<String> onMessage = System.out::println;
 }

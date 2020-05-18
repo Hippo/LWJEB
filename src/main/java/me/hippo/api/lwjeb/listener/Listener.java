@@ -24,6 +24,8 @@ import org.objectweb.asm.tree.*;
 
 import static org.objectweb.asm.Opcodes.*;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -62,11 +64,11 @@ public interface Listener {
      * @return  The dynamic listener.
      */
     static Listener of(Class<?> parent, Method method, Class<?> topic, ExceptionHandlingConfiguration exceptionHandlingConfiguration) {
-
         ClassNode classNode = new ClassNode();
 
         classNode.visit(V1_8, ACC_PUBLIC + ACC_SUPER + ACC_FINAL, "lwjeb/generated/" + parent.getName().replace('.', '/') + "/" + getUniqueMethodName(method), null, "java/lang/Object", new String[]{Listener.class.getName().replace('.', '/')}); //Sets the class name, access, and listeners.
         classNode.methods = new ArrayList<>();
+
 
         /*Creates a default constructor, just super()*/
         MethodNode constructorMethodNode = new MethodNode(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -87,6 +89,8 @@ public interface Listener {
 
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES); //computes the method stack map frames
         classNode.accept(classWriter);
+
+
 
 
         try {

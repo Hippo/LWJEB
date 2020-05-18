@@ -19,6 +19,9 @@ package me.hippo.api.testing.lwjeb.standard;
 
 import me.hippo.api.lwjeb.annotation.Handler;
 import me.hippo.api.lwjeb.bus.PubSub;
+import me.hippo.api.lwjeb.configuration.BusConfigurations;
+import me.hippo.api.lwjeb.configuration.config.impl.BusPubSubConfiguration;
+import me.hippo.api.lwjeb.subscribe.impl.StrongReferencedListenerSubscriber;
 
 
 /**
@@ -26,14 +29,19 @@ import me.hippo.api.lwjeb.bus.PubSub;
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
  */
-public enum StandardMethodTest {
+public enum ConcurrentTest {
     INSTANCE;
 
     public static void main(String[] args) {
-        PubSub<Event> pubSub = new PubSub<>();
+
+        PubSub<Event> pubSub = new PubSub<>(new BusConfigurations.Builder().setConfiguration(BusPubSubConfiguration.class, () -> {
+            BusPubSubConfiguration busPubSubConfiguration = BusPubSubConfiguration.getDefault();
+            busPubSubConfiguration.setSubscriber(new StrongReferencedListenerSubscriber<>());
+            return busPubSubConfiguration;
+        }).build());
         pubSub.subscribe(INSTANCE);
 
-        pubSub.post(new MyEvent()).dispatch();
+        pubSub.post(new MyEvent(pubSub)).dispatch();
     }
 
     @Handler
@@ -42,13 +50,25 @@ public enum StandardMethodTest {
     }
 
     public static abstract class Event {
+        protected PubSub<?> pubSub;
+
+        public Event(PubSub<?> pubSub) {
+            this.pubSub = pubSub;
+        }
+
+
         public abstract void test();
     }
 
     public static final class MyEvent extends Event {
+        public MyEvent(PubSub<?> pubSub) {
+            super(pubSub);
+        }
+
         @Override
         public void test() {
-            System.out.println("Invoked");
+            pubSub.unsubscribe(INSTANCE);
+            System.out.println("nignog");
         }
     }
 

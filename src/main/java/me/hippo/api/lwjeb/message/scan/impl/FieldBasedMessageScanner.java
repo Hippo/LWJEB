@@ -36,7 +36,7 @@ import java.util.function.Consumer;
 
 /**
  * @author Hippo
- * @version 5.0.0, 1/12/20
+ * @version 5.0.1, 1/12/20
  * @since 5.0.0
  *
  * This is a field based implementation of the message scanner, it just searches for fields.
@@ -55,6 +55,8 @@ public final class FieldBasedMessageScanner<T> implements MessageScanner<T> {
         for (Field field : parent.getClass().getDeclaredFields()) {
             try {
                 if(Consumer.class.isAssignableFrom(field.getType()) && field.isAnnotationPresent(Handler.class)) {
+                    boolean accessible = field.isAccessible();
+                    field.setAccessible(true);
                     Consumer listenerConsumer = (Consumer) field.get(parent);
                     Class<?> type = (Class<?>)((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
                     Filter handlerFilter = field.getDeclaredAnnotation(Filter.class);
@@ -78,6 +80,7 @@ public final class FieldBasedMessageScanner<T> implements MessageScanner<T> {
                     }else {
                         messageHandlers.add(new FieldBasedMessageHandler<>(type, filter, listenerConsumer, false));
                     }
+                    field.setAccessible(accessible);
                 }
             }catch (ReflectiveOperationException e) {
                 exceptionHandlingConfiguration.getExceptionHandler().handleException(e);

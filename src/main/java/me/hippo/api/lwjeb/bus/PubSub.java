@@ -108,7 +108,7 @@ public final class PubSub<T> extends AbstractAsynchronousPubSubMessageBus<T> {
      * @param parent  The parent.
      */
     public void unsubscribe(Object parent) {
-        invalidateCaches();
+       invalidateCaches();
         listenerSubscriber.unsubscribe(parent, busPubSubConfiguration.getScanner(), this);
     }
 
