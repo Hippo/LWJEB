@@ -34,6 +34,7 @@ public enum StandardMethodTest {
         pubSub.subscribe(INSTANCE);
 
         pubSub.post(new MyEvent()).dispatch();
+
     }
 
     @Handler
