@@ -27,25 +27,13 @@ package me.hippo.api.lwjeb.listener;
 public final class ListenerClassLoader extends ClassLoader {
 
     /**
-     * Creates a new {@link ClassLoader} that has no parent.
-     */
-    ListenerClassLoader() {
-        super();
-    }
-
-    /**
      * Creates a new {@link ClassLoader} that has specified parent.
      *
      * @param parent Parent {@link ClassLoader}
      */
-    ListenerClassLoader(ClassLoader parent) {
+    public ListenerClassLoader(ClassLoader parent) {
         super(parent);
     }
-
-    /**
-     * An instance to this class.
-     */
-    private static ListenerClassLoader INSTANCE = new ListenerClassLoader();
 
     /**
      * Loads a class by the class name and the bytecode.
@@ -61,26 +49,6 @@ public final class ListenerClassLoader extends ClassLoader {
         }catch (LinkageError e){
             return this.findLoadedClass(className);
         }
-    }
-
-    /**
-     * Gets the instance.
-     *
-     * @return  The instance.
-     */
-    public static ListenerClassLoader getInstance() {
-        return INSTANCE;
-    }
-
-    /**
-     * Forces the {@link ListenerClassLoader} to use specified {@link ClassLoader} as a parent
-     * to avoid exceptions in certain conditions.
-     *
-     * @param parent Parent
-     * @return The instance.
-     */
-    public static ListenerClassLoader withParent(ClassLoader parent) {
-        return INSTANCE = new ListenerClassLoader(parent);
     }
 
 }

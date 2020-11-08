@@ -17,6 +17,7 @@
 
 package me.hippo.api.lwjeb.listener;
 
+import me.hippo.api.lwjeb.configuration.config.impl.ClassLoaderConfiguration;
 import me.hippo.api.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
@@ -63,7 +64,8 @@ public interface Listener {
      * @param exceptionHandlingConfiguration  The exception handling configuration.
      * @return  The dynamic listener.
      */
-    static Listener of(Class<?> parent, Method method, Class<?> topic, ExceptionHandlingConfiguration exceptionHandlingConfiguration) {
+    static Listener of(Class<?> parent, Method method, Class<?> topic, ClassLoaderConfiguration classLoaderConfiguration,
+                       ExceptionHandlingConfiguration exceptionHandlingConfiguration) {
         ClassNode classNode = new ClassNode();
 
         classNode.visit(V1_8, ACC_PUBLIC + ACC_SUPER + ACC_FINAL, "lwjeb/generated/" + parent.getName().replace('.', '/') + "/" + getUniqueMethodName(method), null, "java/lang/Object", new String[]{Listener.class.getName().replace('.', '/')}); //Sets the class name, access, and listeners.
@@ -94,7 +96,7 @@ public interface Listener {
 
 
         try {
-            Class<?> compiledClass = ListenerClassLoader.getInstance().createClass(classNode.name.replace('/', '.'), classWriter.toByteArray());
+            Class<?> compiledClass = classLoaderConfiguration.getListenerClassLoader().createClass(classNode.name.replace('/', '.'), classWriter.toByteArray());
             return (Listener)compiledClass.getConstructor()
                     .newInstance();
         } catch (ReflectiveOperationException e) {

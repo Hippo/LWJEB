@@ -19,10 +19,7 @@ package me.hippo.api.lwjeb.configuration;
 
 
 import me.hippo.api.lwjeb.configuration.config.Configuration;
-import me.hippo.api.lwjeb.configuration.config.impl.AsynchronousPublicationConfiguration;
-import me.hippo.api.lwjeb.configuration.config.impl.BusConfiguration;
-import me.hippo.api.lwjeb.configuration.config.impl.BusPubSubConfiguration;
-import me.hippo.api.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
+import me.hippo.api.lwjeb.configuration.config.impl.*;
 import me.hippo.api.lwjeb.configuration.exception.BusConfigurationException;
 
 import java.util.HashMap;
@@ -62,6 +59,7 @@ public final class BusConfigurations {
         configurations.configurationMap.put(BusConfiguration.class, BusConfiguration.getDefault());
         configurations.configurationMap.put(ExceptionHandlingConfiguration.class, ExceptionHandlingConfiguration.getDefault());
         configurations.configurationMap.put(BusPubSubConfiguration.class, BusPubSubConfiguration.getDefault());
+        configurations.configurationMap.put(ClassLoaderConfiguration.class, ClassLoaderConfiguration.getDefault());
         return configurations;
     }
 
