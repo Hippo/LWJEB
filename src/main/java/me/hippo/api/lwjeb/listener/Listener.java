@@ -95,7 +95,8 @@ public interface Listener {
 
         try {
             Class<?> compiledClass = ListenerClassLoader.getInstance().createClass(classNode.name.replace('/', '.'), classWriter.toByteArray());
-            return (Listener)compiledClass.newInstance();
+            return (Listener)compiledClass.getConstructor()
+                    .newInstance();
         } catch (ReflectiveOperationException e) {
             exceptionHandlingConfiguration.getExceptionHandler().handleException(e);
             return method::invoke;
