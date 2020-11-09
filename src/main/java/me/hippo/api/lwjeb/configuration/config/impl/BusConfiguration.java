@@ -18,10 +18,13 @@
 package me.hippo.api.lwjeb.configuration.config.impl;
 
 import me.hippo.api.lwjeb.configuration.config.Configuration;
+import me.hippo.api.lwjeb.listener.ListenerClassLoader;
 import me.hippo.api.lwjeb.message.result.MessagePublicationResult;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.lang.ClassLoader.getSystemClassLoader;
 
 /**
  * @author Hippo
@@ -32,6 +35,10 @@ public final class BusConfiguration implements Configuration<BusConfiguration> {
 
     private String identifier;
 
+
+    /** The parent class loader */
+    private ListenerClassLoader listenerClassLoader;
+
     public static BusConfiguration getDefault() {
         return new BusConfiguration().provideDefault();
     }
@@ -40,6 +47,7 @@ public final class BusConfiguration implements Configuration<BusConfiguration> {
     public BusConfiguration provideDefault() {
         BusConfiguration configuration = new BusConfiguration();
         configuration.setIdentifier("LWJEB");
+        configuration.setListenerClassLoader(new ListenerClassLoader(getSystemClassLoader()));
         return configuration;
     }
 
@@ -49,6 +57,25 @@ public final class BusConfiguration implements Configuration<BusConfiguration> {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    /**
+     * Gets the listener class loader
+     *
+     * @return The listener class loader
+     */
+    public ListenerClassLoader getListenerClassLoader() {
+        return listenerClassLoader;
+    }
+
+    /**
+     * Sets the listener class loader
+     *
+     * @param listenerClassLoader Listener class loader
+     */
+    public BusConfiguration setListenerClassLoader(ListenerClassLoader listenerClassLoader) {
+        this.listenerClassLoader = listenerClassLoader;
+        return this;
     }
 
 }

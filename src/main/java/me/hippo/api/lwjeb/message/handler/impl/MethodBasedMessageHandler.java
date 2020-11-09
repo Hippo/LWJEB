@@ -17,6 +17,7 @@
 
 package me.hippo.api.lwjeb.message.handler.impl;
 
+import me.hippo.api.lwjeb.configuration.config.impl.BusConfiguration;
 import me.hippo.api.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
 import me.hippo.api.lwjeb.filter.MessageFilter;
 import me.hippo.api.lwjeb.listener.Listener;
@@ -74,10 +75,11 @@ public final class MethodBasedMessageHandler<T> implements MessageHandler<T> {
      * @param exceptionHandlingConfiguration  The exception handling configuration.
      * @param wrapped  Weather if its wrapped.
      */
-    public MethodBasedMessageHandler(Object parent, Class<T> topic, Method method, MessageFilter<T>[] filters, ExceptionHandlingConfiguration exceptionHandlingConfiguration, boolean wrapped) {
+    public MethodBasedMessageHandler(Object parent, Class<T> topic, Method method, MessageFilter<T>[] filters, BusConfiguration config,
+                                     ExceptionHandlingConfiguration exceptionHandlingConfiguration, boolean wrapped) {
         this.parent = parent;
         this.topic = topic;
-        this.listener = Listener.of(parent.getClass(), method, wrapped ? WrappedType.class : topic, exceptionHandlingConfiguration);
+        this.listener = Listener.of(parent.getClass(), method, wrapped ? WrappedType.class : topic, config, exceptionHandlingConfiguration);
         this.filters = filters;
         this.exceptionHandlingConfiguration = exceptionHandlingConfiguration;
         this.wrapped = wrapped;
