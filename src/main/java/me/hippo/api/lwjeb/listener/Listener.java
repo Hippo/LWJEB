@@ -17,7 +17,7 @@
 
 package me.hippo.api.lwjeb.listener;
 
-import me.hippo.api.lwjeb.configuration.config.impl.ClassLoaderConfiguration;
+import me.hippo.api.lwjeb.configuration.config.impl.BusConfiguration;
 import me.hippo.api.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
@@ -25,9 +25,6 @@ import org.objectweb.asm.tree.*;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -64,7 +61,7 @@ public interface Listener {
      * @param exceptionHandlingConfiguration  The exception handling configuration.
      * @return  The dynamic listener.
      */
-    static Listener of(Class<?> parent, Method method, Class<?> topic, ClassLoaderConfiguration classLoaderConfiguration,
+    static Listener of(Class<?> parent, Method method, Class<?> topic, BusConfiguration config,
                        ExceptionHandlingConfiguration exceptionHandlingConfiguration) {
         ClassNode classNode = new ClassNode();
 
@@ -96,7 +93,7 @@ public interface Listener {
 
 
         try {
-            Class<?> compiledClass = classLoaderConfiguration.getListenerClassLoader().createClass(classNode.name.replace('/', '.'), classWriter.toByteArray());
+            Class<?> compiledClass = config.getListenerClassLoader().createClass(classNode.name.replace('/', '.'), classWriter.toByteArray());
             return (Listener)compiledClass.getConstructor()
                     .newInstance();
         } catch (ReflectiveOperationException e) {

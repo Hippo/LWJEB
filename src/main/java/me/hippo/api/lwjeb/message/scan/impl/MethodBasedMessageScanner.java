@@ -21,7 +21,7 @@ import me.hippo.api.lwjeb.annotation.Filter;
 import me.hippo.api.lwjeb.annotation.Handler;
 import me.hippo.api.lwjeb.annotation.Wrapped;
 import me.hippo.api.lwjeb.bus.subscribe.SubscribeMessageBus;
-import me.hippo.api.lwjeb.configuration.config.impl.ClassLoaderConfiguration;
+import me.hippo.api.lwjeb.configuration.config.impl.BusConfiguration;
 import me.hippo.api.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
 import me.hippo.api.lwjeb.filter.MessageFilter;
 import me.hippo.api.lwjeb.message.handler.MessageHandler;
@@ -50,7 +50,7 @@ public final class MethodBasedMessageScanner<T> implements MessageScanner<T> {
     public List<MessageHandler<T>> scan(Object parent, SubscribeMessageBus messageBus) {
         List<MessageHandler<T>> handlers = new ArrayList<>();
 
-        ClassLoaderConfiguration classLoaderConfiguration = messageBus.getConfigurations().get(ClassLoaderConfiguration.class);
+        BusConfiguration config = messageBus.getConfigurations().get(BusConfiguration.class);
         ExceptionHandlingConfiguration exceptionHandlingConfiguration = messageBus.getConfigurations().get(ExceptionHandlingConfiguration.class);
 
         for (Method method : parent.getClass().getDeclaredMethods()) {
@@ -74,10 +74,10 @@ public final class MethodBasedMessageScanner<T> implements MessageScanner<T> {
                     if(wrappedType != null) {
                         for (Class<?> acceptedType : wrappedType.value()) {
 
-                            handlers.add(new MethodBasedMessageHandler<>(parent, acceptedType, method, filter, classLoaderConfiguration, exceptionHandlingConfiguration, true));
+                            handlers.add(new MethodBasedMessageHandler<>(parent, acceptedType, method, filter, config, exceptionHandlingConfiguration, true));
                         }
                     }else {
-                        handlers.add(new MethodBasedMessageHandler<>(parent, type, method, filter, classLoaderConfiguration, exceptionHandlingConfiguration, false));
+                        handlers.add(new MethodBasedMessageHandler<>(parent, type, method, filter, config, exceptionHandlingConfiguration, false));
                     }
                 }
             } catch (ReflectiveOperationException e) {

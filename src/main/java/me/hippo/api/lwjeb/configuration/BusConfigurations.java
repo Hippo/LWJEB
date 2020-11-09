@@ -59,7 +59,6 @@ public final class BusConfigurations {
         configurations.configurationMap.put(BusConfiguration.class, BusConfiguration.getDefault());
         configurations.configurationMap.put(ExceptionHandlingConfiguration.class, ExceptionHandlingConfiguration.getDefault());
         configurations.configurationMap.put(BusPubSubConfiguration.class, BusPubSubConfiguration.getDefault());
-        configurations.configurationMap.put(ClassLoaderConfiguration.class, ClassLoaderConfiguration.getDefault());
         return configurations;
     }
 
