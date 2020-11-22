@@ -11,7 +11,7 @@ repositories {
 
 ```
 dependencies {
-    implementation 'com.github.Hippah:LWJEB:5.1.1'
+    implementation 'com.github.Hippah:LWJEB:5.1.2'
     implementation 'org.ow2.asm:asm:9.0'
     implementation 'org.ow2.asm:asm-tree:9.0'
 }
