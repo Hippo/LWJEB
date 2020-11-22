@@ -48,7 +48,7 @@ public final class MethodBasedMessageScanner<T> implements MessageScanner<T> {
     @SuppressWarnings("unchecked")
     @Override
     public List<MessageHandler<T>> scan(Object parent, SubscribeMessageBus<T> messageBus) {
-        List<MessageHandler<T>> handlers = new ArrayList<>();
+        List<MessageHandler<T>> handlers = new ArrayList<>(parent.getClass().getMethods().length);
 
         BusConfiguration config = messageBus.getConfigurations().get(BusConfiguration.class);
         ExceptionHandlingConfiguration exceptionHandlingConfiguration = messageBus.getConfigurations().get(ExceptionHandlingConfiguration.class);

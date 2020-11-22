@@ -49,7 +49,7 @@ public final class FieldBasedMessageScanner<T> implements MessageScanner<T> {
     @SuppressWarnings("unchecked")
     @Override
     public List<MessageHandler<T>> scan(Object parent, SubscribeMessageBus<T> messageBus) {
-        List<MessageHandler<T>> messageHandlers = new ArrayList<>();
+        List<MessageHandler<T>> messageHandlers = new ArrayList<>(parent.getClass().getMethods().length);
         ExceptionHandlingConfiguration exceptionHandlingConfiguration = messageBus.getConfigurations().get(ExceptionHandlingConfiguration.class);
 
         for (Field field : parent.getClass().getDeclaredFields()) {
