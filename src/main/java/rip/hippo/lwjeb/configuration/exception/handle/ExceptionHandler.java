@@ -14,30 +14,23 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.configuration.exception.handle;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/30/19
+ * @since 5.0.0
+ *
+ * An exception handler handles exceptions, gives you more control on how your errors are handled.
+ */
+@FunctionalInterface
+public interface ExceptionHandler {
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+    /**
+     * Handles the exception.
+     *
+     * @param t  The exception.
+     */
+    void handleException(Throwable t);
 }

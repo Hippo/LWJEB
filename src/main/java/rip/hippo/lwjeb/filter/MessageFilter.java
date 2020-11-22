@@ -14,30 +14,24 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.filter;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/2/19
+ * @since 5.0.0
+ *
+ * A message filter checks if a topic meets all the requirements to be invoked.
+ */
+@FunctionalInterface
+public interface MessageFilter<T> {
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+    /**
+     * Checks if the {@code topic} passes the filter.
+     *
+     * @param topic  The topic.
+     * @return  Weather if it passes.
+     */
+    boolean passes(T topic);
 }

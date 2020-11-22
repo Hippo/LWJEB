@@ -14,30 +14,23 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.configuration.config;
 
-sourceCompatibility = 1.8
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/26/19
+ * @since 5.0.0
+ *
+ * A configuration helps configure the bus to your exact likings.
+ */
+@FunctionalInterface
+public interface Configuration<T extends Configuration> {
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+    /**
+     * Gets the default configuration.
+     *
+     * @return  The default configuration
+     */
+    T provideDefault();
 }

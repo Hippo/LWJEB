@@ -14,30 +14,24 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.bus;
 
-sourceCompatibility = 1.8
+import rip.hippo.lwjeb.configuration.BusConfigurations;
 
-repositories {
-    mavenCentral()
-}
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/1/19
+ * @since 5.0.0
+ *
+ * A message bus is a configurable bus.
+ */
+@FunctionalInterface
+public interface MessageBus {
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+    /**
+     * Gets the current configuration.
+     * @return
+     */
+    BusConfigurations getConfigurations();
 }
