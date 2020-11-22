@@ -14,30 +14,20 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.testing.filter;
 
-sourceCompatibility = 1.8
+import rip.hippo.lwjeb.filter.MessageFilter;
 
-repositories {
-    mavenCentral()
-}
+/**
+ * @author Hippo
+ * @version 5.0.0, 1/13/20
+ * @since 5.0.0
+ */
+public final class StringCasingFilter implements MessageFilter<String> {
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
+    @Override
+    public boolean passes(String topic) {
+        return topic.toLowerCase().equals(topic);
     }
 }

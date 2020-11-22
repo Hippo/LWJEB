@@ -14,30 +14,29 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.annotation;
 
-sourceCompatibility = 1.8
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-repositories {
-    mavenCentral()
-}
+/**
+ * @author Hippo
+ * @version 5.0.0, 11/2/19
+ * @since 5.0.0
+ *
+ * Marks a handler as a wropped type.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {ElementType.METHOD, ElementType.FIELD})
+public @interface Wrapped {
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+    /**
+     * The types that allow a handler to be invoked.
+     *
+     * @return  The types.
+     */
+    Class<?>[] value();
 }

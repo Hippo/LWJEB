@@ -14,30 +14,27 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.configuration.exception.handle.impl;
 
-sourceCompatibility = 1.8
+import rip.hippo.lwjeb.configuration.exception.handle.ExceptionHandler;
 
-repositories {
-    mavenCentral()
-}
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/30/19
+ * @since 5.0.0
+ *
+ * The standard handler simply just prints the stack trace.
+ */
+public enum StandardExceptionHandler implements ExceptionHandler {
+    INSTANCE;
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void handleException(Throwable t) {
+        t.printStackTrace();
     }
 }

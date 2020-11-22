@@ -14,30 +14,25 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.bus.publish;
 
-sourceCompatibility = 1.8
+import rip.hippo.lwjeb.bus.MessageBus;
+import rip.hippo.lwjeb.message.publish.MessagePublisher;
 
-repositories {
-    mavenCentral()
-}
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/26/19
+ * @since 5.0.0
+ *
+ * A publish bus extends the functionality to allow topics to be published.
+ */
+public interface PublishMessageBus<T> extends MessageBus {
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+    /**
+     * Gets the publisher.
+     *
+     * @return  The publisher.
+     */
+    MessagePublisher<T> getPublisher();
 }

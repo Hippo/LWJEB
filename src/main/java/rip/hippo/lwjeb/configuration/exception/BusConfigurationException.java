@@ -14,30 +14,18 @@
  * limitations under the License.
  *
  */
-plugins {
-    id 'java'
-    id 'maven-publish'
-}
 
-group 'rip.hippo'
-version '5.1.1'
+package rip.hippo.lwjeb.configuration.exception;
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.ow2.asm', name: 'asm', version: '9.0'
-    compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
+/**
+ * @author Hippo
+ * @version 5.0.0, 10/27/19
+ * @since 5.0.0
+ *
+ * A basic exception that is thrown whenever there is an error configuring the bus.
+ */
+public final class BusConfigurationException extends RuntimeException {
+    public BusConfigurationException(String message) {
+        super(message);
     }
 }
