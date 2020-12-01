@@ -1,10 +1,12 @@
-idea/
-release/
-out/
-gradle/
-build/
-archive/
-mvn/
-.idea/
+# Gradle
 .gradle/
+build/
+
+# IDEA
+.idea
+
+#OSX
 .DS_Store
+
+# Git
+.git/
