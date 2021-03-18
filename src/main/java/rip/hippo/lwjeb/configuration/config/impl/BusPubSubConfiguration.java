@@ -65,11 +65,10 @@ public final class BusPubSubConfiguration implements Configuration<BusPubSubConf
      */
     @Override
     public BusPubSubConfiguration provideDefault() {
-        BusPubSubConfiguration configuration = new BusPubSubConfiguration();
-        configuration.setSubscriber(new WeakReferencedListenerSubscriber<>());
-        configuration.setPublisher(new StandardMessagePublisher<>());
-        configuration.setScanner(new MethodBasedMessageScanner<>());
-        return configuration;
+        this.setSubscriber(new WeakReferencedListenerSubscriber<>());
+        this.setPublisher(new StandardMessagePublisher<>());
+        this.setScanner(new MethodBasedMessageScanner<>());
+        return this;
     }
 
     /**

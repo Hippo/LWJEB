@@ -49,9 +49,8 @@ public final class ExceptionHandlingConfiguration implements Configuration<Excep
      */
     @Override
     public ExceptionHandlingConfiguration provideDefault() {
-        ExceptionHandlingConfiguration configuration = new ExceptionHandlingConfiguration();
-        configuration.setExceptionHandler(StandardExceptionHandler.INSTANCE);
-        return configuration;
+        this.setExceptionHandler(StandardExceptionHandler.INSTANCE);
+        return this;
     }
 
     /**

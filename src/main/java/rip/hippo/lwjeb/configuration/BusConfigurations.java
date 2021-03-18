@@ -19,11 +19,8 @@ package rip.hippo.lwjeb.configuration;
 
 
 import rip.hippo.lwjeb.configuration.config.Configuration;
+import rip.hippo.lwjeb.configuration.config.impl.*;
 import rip.hippo.lwjeb.configuration.exception.BusConfigurationException;
-import rip.hippo.lwjeb.configuration.config.impl.AsynchronousPublicationConfiguration;
-import rip.hippo.lwjeb.configuration.config.impl.BusConfiguration;
-import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
-import rip.hippo.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +28,7 @@ import java.util.function.Supplier;
 
 /**
  * @author Hippo
- * @version 5.0.0, 10/26/19
+ * @version 5.0.1, 10/26/19
  * @since 5.0.0
  *
  * The bus configurations hold all the configuration instances.
@@ -62,6 +59,7 @@ public final class BusConfigurations {
         configurations.configurationMap.put(BusConfiguration.class, BusConfiguration.getDefault());
         configurations.configurationMap.put(ExceptionHandlingConfiguration.class, ExceptionHandlingConfiguration.getDefault());
         configurations.configurationMap.put(BusPubSubConfiguration.class, BusPubSubConfiguration.getDefault());
+        configurations.configurationMap.put(ListenerFactoryConfiguration.class, ListenerFactoryConfiguration.getDefault());
         return configurations;
     }
 

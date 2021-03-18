@@ -57,11 +57,10 @@ public final class AsynchronousPublicationConfiguration implements Configuration
      */
     @Override
     public AsynchronousPublicationConfiguration provideDefault() {
-        AsynchronousPublicationConfiguration configuration = new AsynchronousPublicationConfiguration();
-        configuration.setDispatcherCount(3);
-        configuration.setSuppressDispatcherInterrupt(true);
-        configuration.setDaemonThreads(false);
-        return configuration;
+        this.setDispatcherCount(3);
+        this.setSuppressDispatcherInterrupt(true);
+        this.setDaemonThreads(false);
+        return this;
     }
 
     /**

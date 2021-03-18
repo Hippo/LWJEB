@@ -41,5 +41,5 @@ public @interface Filter {
      *
      * @return  The filters.
      */
-    Class<? extends MessageFilter>[] value();
+    Class<? extends MessageFilter<?>>[] value();
 }

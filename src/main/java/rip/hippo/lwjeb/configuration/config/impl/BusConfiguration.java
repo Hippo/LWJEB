@@ -54,10 +54,9 @@ public final class BusConfiguration implements Configuration<BusConfiguration> {
      */
     @Override
     public BusConfiguration provideDefault() {
-        BusConfiguration configuration = new BusConfiguration();
-        configuration.setIdentifier("LWJEB");
-        configuration.setListenerClassLoader(new ListenerClassLoader(this.getClass().getClassLoader()));
-        return configuration;
+        this.setIdentifier("LWJEB");
+        this.setListenerClassLoader(new ListenerClassLoader(this.getClass().getClassLoader()));
+        return this;
     }
 
     /**

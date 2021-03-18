@@ -17,17 +17,6 @@
 
 package rip.hippo.lwjeb.listener;
 
-import rip.hippo.lwjeb.configuration.config.impl.BusConfiguration;
-import rip.hippo.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
-
-import static org.objectweb.asm.Opcodes.*;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 
 /**
  * @author Hippo
@@ -46,71 +35,5 @@ public interface Listener {
      * @param topic  The topic.
      * @throws ReflectiveOperationException  If there is an error invoking the handler.
      */
-    void invoke(Object parent, Object topic) throws ReflectiveOperationException;
-
-    /**
-     * Dynamically generates a listener to invoke {@code method}.
-     *
-     * <p>
-     *     Comments included throughout the method to understand the bytecode better.
-     * </p>
-     *
-     * @param parent  The parent.
-     * @param method  The method.
-     * @param topic  The topic.
-     * @param exceptionHandlingConfiguration  The exception handling configuration.
-     * @return  The dynamic listener.
-     */
-    static Listener of(Class<?> parent, Method method, Class<?> topic, BusConfiguration config,
-                       ExceptionHandlingConfiguration exceptionHandlingConfiguration) {
-        ClassNode classNode = new ClassNode();
-
-        classNode.visit(V1_8, ACC_PUBLIC + ACC_SUPER + ACC_FINAL, "lwjeb/generated/" + parent.getName().replace('.', '/') + "/" + getUniqueMethodName(method), null, "java/lang/Object", new String[]{Listener.class.getName().replace('.', '/')}); //Sets the class name, access, and listeners.
-        classNode.methods = new ArrayList<>();
-
-
-        /*Creates a default constructor, just super()*/
-        MethodNode constructorMethodNode = new MethodNode(ACC_PUBLIC, "<init>", "()V", null, null);
-        constructorMethodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-        constructorMethodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false));
-        constructorMethodNode.instructions.add(new InsnNode(RETURN));
-
-        MethodNode invokeMethodNode = new MethodNode(ACC_PUBLIC, "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)V", null, null);
-        invokeMethodNode.instructions.add(new VarInsnNode(ALOAD, 1)); //pushes the parent to the stack.
-        invokeMethodNode.instructions.add(new TypeInsnNode(CHECKCAST, parent.getName().replace('.', '/'))); //cast parent to the actual parents type.
-        invokeMethodNode.instructions.add(new VarInsnNode(ALOAD, 2)); //pushes the topic to the stack.
-        invokeMethodNode.instructions.add(new TypeInsnNode(CHECKCAST, topic.getName().replace('.', '/'))); //cast the topic to the actual topics type.
-        invokeMethodNode.instructions.add(new MethodInsnNode(INVOKEVIRTUAL, parent.getName().replace('.', '/'), method.getName(), Type.getMethodDescriptor(method), false)); //invokes the method.
-        invokeMethodNode.instructions.add(new InsnNode(RETURN));
-
-        classNode.methods.add(constructorMethodNode);
-        classNode.methods.add(invokeMethodNode);
-
-        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-        classNode.accept(classWriter);
-
-        try {
-            Class<?> compiledClass = config.getListenerClassLoader().createClass(classNode.name.replace('/', '.'), classWriter.toByteArray());
-            return (Listener)compiledClass.getConstructor()
-                    .newInstance();
-        } catch (ReflectiveOperationException e) {
-            exceptionHandlingConfiguration.getExceptionHandler().handleException(e);
-            return method::invoke;
-        }
-
-    }
-
-    /**
-     * Gets a unique method name from a method instance.
-     *
-     * @param method  The method.
-     * @return  The unique name.
-     */
-    static String getUniqueMethodName(Method method) {
-        StringBuilder parameters = new StringBuilder();
-        for (Parameter parameter : method.getParameters()) {
-            parameters.append(parameter.getType().getName().replace('.', '_'));
-        }
-        return method.getName() + parameters.toString();
-    }
+    void invoke(Object parent, Object topic);
 }

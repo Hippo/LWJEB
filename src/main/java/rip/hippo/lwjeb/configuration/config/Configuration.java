@@ -25,7 +25,7 @@ package rip.hippo.lwjeb.configuration.config;
  * A configuration helps configure the bus to your exact likings.
  */
 @FunctionalInterface
-public interface Configuration<T extends Configuration> {
+public interface Configuration<T extends Configuration<?>> {
 
     /**
      * Gets the default configuration.

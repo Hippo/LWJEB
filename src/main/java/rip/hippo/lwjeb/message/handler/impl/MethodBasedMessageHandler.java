@@ -19,6 +19,7 @@ package rip.hippo.lwjeb.message.handler.impl;
 
 import rip.hippo.lwjeb.configuration.config.impl.BusConfiguration;
 import rip.hippo.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
+import rip.hippo.lwjeb.configuration.config.impl.ListenerFactoryConfiguration;
 import rip.hippo.lwjeb.filter.MessageFilter;
 import rip.hippo.lwjeb.listener.Listener;
 import rip.hippo.lwjeb.message.handler.MessageHandler;
@@ -75,11 +76,17 @@ public final class MethodBasedMessageHandler<T> implements MessageHandler<T> {
      * @param exceptionHandlingConfiguration  The exception handling configuration.
      * @param wrapped  Weather if its wrapped.
      */
-    public MethodBasedMessageHandler(Object parent, Class<T> topic, Method method, MessageFilter<T>[] filters, BusConfiguration config,
-                                     ExceptionHandlingConfiguration exceptionHandlingConfiguration, boolean wrapped) {
+    public MethodBasedMessageHandler(Object parent,
+                                     Class<T> topic,
+                                     Method method,
+                                     MessageFilter<T>[] filters,
+                                     BusConfiguration config,
+                                     ListenerFactoryConfiguration listenerFactoryConfiguration,
+                                     ExceptionHandlingConfiguration exceptionHandlingConfiguration,
+                                     boolean wrapped) {
         this.parent = parent;
         this.topic = topic;
-        this.listener = Listener.of(parent.getClass(), method, wrapped ? WrappedType.class : topic, config, exceptionHandlingConfiguration);
+        this.listener = listenerFactoryConfiguration.getListenerFactory().create(parent.getClass(), method, wrapped ? WrappedType.class : topic, config);
         this.filters = filters;
         this.exceptionHandlingConfiguration = exceptionHandlingConfiguration;
         this.wrapped = wrapped;
@@ -92,8 +99,8 @@ public final class MethodBasedMessageHandler<T> implements MessageHandler<T> {
     public void handle(T topic) {
         try {
             listener.invoke(parent, wrapped ? new WrappedType(topic) : topic);
-        } catch (ReflectiveOperationException e) {
-            exceptionHandlingConfiguration.getExceptionHandler().handleException(e);
+        } catch (Throwable t) {
+            exceptionHandlingConfiguration.getExceptionHandler().handleException(t);
         }
     }
 

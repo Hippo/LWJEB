@@ -23,6 +23,7 @@ import rip.hippo.lwjeb.annotation.Wrapped;
 import rip.hippo.lwjeb.bus.subscribe.SubscribeMessageBus;
 import rip.hippo.lwjeb.configuration.config.impl.BusConfiguration;
 import rip.hippo.lwjeb.configuration.config.impl.ExceptionHandlingConfiguration;
+import rip.hippo.lwjeb.configuration.config.impl.ListenerFactoryConfiguration;
 import rip.hippo.lwjeb.filter.MessageFilter;
 import rip.hippo.lwjeb.message.handler.MessageHandler;
 import rip.hippo.lwjeb.message.handler.impl.MethodBasedMessageHandler;
@@ -35,7 +36,7 @@ import java.util.List;
 
 /**
  * @author Hippo
- * @version 5.0.0, 11/2/19
+ * @version 5.0.1, 11/2/19
  * @since 5.0.0
  *
  * This is a method based implementation of the message scanner, it just searches for methods.
@@ -52,6 +53,7 @@ public final class MethodBasedMessageScanner<T> implements MessageScanner<T> {
 
         BusConfiguration config = messageBus.getConfigurations().get(BusConfiguration.class);
         ExceptionHandlingConfiguration exceptionHandlingConfiguration = messageBus.getConfigurations().get(ExceptionHandlingConfiguration.class);
+        ListenerFactoryConfiguration listenerFactoryConfiguration = messageBus.getConfigurations().get(ListenerFactoryConfiguration.class);
 
         for (Method method : parent.getClass().getDeclaredMethods()) {
             try {
@@ -76,10 +78,10 @@ public final class MethodBasedMessageScanner<T> implements MessageScanner<T> {
                     if(wrappedType != null) {
                         for (Class<?> acceptedType : wrappedType.value()) {
 
-                            handlers.add(new MethodBasedMessageHandler<T>(parent, (Class<T>) acceptedType, method, filter, config, exceptionHandlingConfiguration, true));
+                            handlers.add(new MethodBasedMessageHandler<T>(parent, (Class<T>) acceptedType, method, filter, config, listenerFactoryConfiguration, exceptionHandlingConfiguration, true));
                         }
                     }else {
-                        handlers.add(new MethodBasedMessageHandler<T>(parent, (Class<T>) type, method, filter, config, exceptionHandlingConfiguration, false));
+                        handlers.add(new MethodBasedMessageHandler<T>(parent, (Class<T>) type, method, filter, config, listenerFactoryConfiguration, exceptionHandlingConfiguration, false));
                     }
                 }
             } catch (ReflectiveOperationException e) {
