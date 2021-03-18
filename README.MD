@@ -1,5 +1,5 @@
 # LWJEB
-A pubsub written in java, super fast and based on object web asm.
+A speed and convenient designed pubsub written in java.
 
 Add LWJEB to your project:
 
