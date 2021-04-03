@@ -76,10 +76,10 @@ public final class FieldBasedMessageScanner<T> implements MessageScanner<T> {
 
                     if(wrappedType != null) {
                         for (Class<?> acceptedType : wrappedType.value()) {
-                            messageHandlers.add(new FieldBasedMessageHandler<T>((Class<T>) acceptedType, filter, listenerConsumer,true));
+                            messageHandlers.add(new FieldBasedMessageHandler<>((Class<T>) acceptedType, filter, listenerConsumer, true));
                         }
                     }else {
-                        messageHandlers.add(new FieldBasedMessageHandler<T>((Class<T>) type, filter, listenerConsumer, false));
+                        messageHandlers.add(new FieldBasedMessageHandler<>((Class<T>) type, filter, listenerConsumer, false));
                     }
                 }
             }catch (ReflectiveOperationException e) {

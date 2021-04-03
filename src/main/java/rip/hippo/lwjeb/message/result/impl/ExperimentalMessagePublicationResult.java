@@ -82,7 +82,7 @@ public final class ExperimentalMessagePublicationResult<T> implements MessagePub
      */
     @Override
     public void dispatch() {
-        for (int i = 0; i < handlers.size(); i++) {
+        for (int i = 0, j = handlers.size(); i < j; i++) {
             handlers.get(i).handle(topic);
         }
     }
