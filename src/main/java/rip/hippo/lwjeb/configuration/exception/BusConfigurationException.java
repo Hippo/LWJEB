@@ -21,11 +21,12 @@ package rip.hippo.lwjeb.configuration.exception;
  * @author Hippo
  * @version 5.0.0, 10/27/19
  * @since 5.0.0
- *
+ * <p>
  * A basic exception that is thrown whenever there is an error configuring the bus.
+ * </p>
  */
 public final class BusConfigurationException extends RuntimeException {
-    public BusConfigurationException(String message) {
-        super(message);
-    }
+  public BusConfigurationException(String message) {
+    super(message);
+  }
 }

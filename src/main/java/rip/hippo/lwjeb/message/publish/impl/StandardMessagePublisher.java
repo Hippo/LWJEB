@@ -30,17 +30,18 @@ import java.util.List;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
+ * <p>
  * This is the standard implementation if a message publisher, it returns standard results.
+ * </p>
  */
 public final class StandardMessagePublisher<T> implements MessagePublisher<T> {
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public MessagePublicationResult<T> publish(T topic, AbstractAsynchronousPubSubMessageBus<T> messageBus) {
-        List<MessageHandler<T>> messageHandlers = messageBus.getSubscriber().subscriberMap().get(topic.getClass());
-        return messageHandlers == null ? new DeadMessagePublicationResult<>() : new StandardMessagePublicationResult<>(messageBus, messageHandlers, topic);
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public MessagePublicationResult<T> publish(T topic, AbstractAsynchronousPubSubMessageBus<T> messageBus) {
+    List<MessageHandler<T>> messageHandlers = messageBus.getSubscriber().subscriberMap().get(topic.getClass());
+    return messageHandlers == null ? new DeadMessagePublicationResult<>() : new StandardMessagePublicationResult<>(messageBus, messageHandlers, topic);
+  }
 }

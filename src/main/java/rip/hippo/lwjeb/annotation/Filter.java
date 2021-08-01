@@ -29,17 +29,18 @@ import java.lang.annotation.Target;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
+ * <p>
  * Applies filters to the handler.
+ * </p>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.FIELD})
 public @interface Filter {
 
-    /**
-     * The filters.
-     *
-     * @return  The filters.
-     */
-    Class<? extends MessageFilter<?>>[] value();
+  /**
+   * The filters.
+   *
+   * @return The filters.
+   */
+  Class<? extends MessageFilter<?>>[] value();
 }

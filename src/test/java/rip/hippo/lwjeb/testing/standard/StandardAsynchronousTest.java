@@ -22,7 +22,7 @@ import rip.hippo.lwjeb.bus.PubSub;
 import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
 import rip.hippo.lwjeb.subscribe.impl.StrongReferencedListenerSubscriber;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;

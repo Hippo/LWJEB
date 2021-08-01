@@ -13,6 +13,6 @@ repositories {
 
 ```
 dependencies {
-    implementation group: 'com.github.Hippo', name: 'LWJEB', version: '5.2.0'
+    implementation group: 'com.github.Hippo', name: 'LWJEB', version: '5.3.0'
 }
 ```

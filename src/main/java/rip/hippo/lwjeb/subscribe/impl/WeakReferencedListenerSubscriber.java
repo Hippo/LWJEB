@@ -28,42 +28,43 @@ import java.util.WeakHashMap;
 /**
  * @author Hippo
  * @version 5.0.0, 11/2/19
- * @since 5.0.0
- *
- * This is a weak implementation of a listener subscriber, this is used for non-concurrent uses.
  * @see WeakHashMap  for more details on how it handles with garbage collecting.
+ * @since 5.0.0
+ * <p>
+ * This is a weak implementation of a listener subscriber, this is used for non-concurrent uses.
+ * </p>
  */
 public final class WeakReferencedListenerSubscriber<T> extends AbstractListenerSubscriber<T> {
 
-    /**
-     * The subscriber map.
-     * <p>
-     *     This only contains subscribed objects.
-     * </p>
-     */
-    private final WeakHashMap<Class<T>, ArrayList<MessageHandler<T>>> subscriberMap;
+  /**
+   * The subscriber map.
+   * <p>
+   * This only contains subscribed objects.
+   * </p>
+   */
+  private final WeakHashMap<Class<T>, ArrayList<MessageHandler<T>>> subscriberMap;
 
-    public WeakReferencedListenerSubscriber() {
-        this.subscriberMap = new WeakHashMap<>();
-    }
+  public WeakReferencedListenerSubscriber() {
+    this.subscriberMap = new WeakHashMap<>();
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void subscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
-        for (MessageHandler<T> cachedHandler : getCachedHandlers(parent, scanner, subscribeBus)) {
-            subscriberMap.computeIfAbsent(cachedHandler.getTopic(), ignored -> new ArrayList<>()).add(cachedHandler);
-        }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void subscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
+    for (MessageHandler<T> cachedHandler : getCachedHandlers(parent, scanner, subscribeBus)) {
+      subscriberMap.computeIfAbsent(cachedHandler.getTopic(), ignored -> new ArrayList<>()).add(cachedHandler);
     }
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public WeakHashMap<Class<T>, ArrayList<MessageHandler<T>>> subscriberMap() {
-        return subscriberMap;
-    }
+  /**
+   * @inheritDoc
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public WeakHashMap<Class<T>, ArrayList<MessageHandler<T>>> subscriberMap() {
+    return subscriberMap;
+  }
 
 }

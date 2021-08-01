@@ -19,7 +19,7 @@ package rip.hippo.lwjeb.testing.benchmarks;
 
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hippo

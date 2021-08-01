@@ -23,17 +23,18 @@ import rip.hippo.lwjeb.configuration.exception.handle.ExceptionHandler;
  * @author Hippo
  * @version 5.0.0, 10/30/19
  * @since 5.0.0
- *
+ * <p>
  * The simplified handler just prints a small text where the error was thrown.
+ * </p>
  */
 public enum SimplifiedExceptionHandler implements ExceptionHandler {
-    INSTANCE;
+  INSTANCE;
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void handleException(Throwable t) {
-        System.err.println(t.toString() + " -> " + t.getStackTrace()[0] + (t.getMessage() == null ? "" : (" -> " + t.getMessage())));
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void handleException(Throwable t) {
+    System.err.println(t.toString() + " -> " + t.getStackTrace()[0] + (t.getMessage() == null ? "" : (" -> " + t.getMessage())));
+  }
 }

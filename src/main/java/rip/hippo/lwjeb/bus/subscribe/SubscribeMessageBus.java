@@ -24,15 +24,16 @@ import rip.hippo.lwjeb.subscribe.ListenerSubscriber;
  * @author Hippo
  * @version 5.0.0, 11/1/19
  * @since 5.0.0
- *
+ * <p>
  * A subscribe bus extends the functionality to allow objects to be subscribed.
+ * </p>
  */
 public interface SubscribeMessageBus<T> extends MessageBus {
 
-    /**
-     * Gets the subscriber.
-     *
-     * @return  The subscriber.
-     */
-    ListenerSubscriber<T> getSubscriber();
+  /**
+   * Gets the subscriber.
+   *
+   * @return The subscriber.
+   */
+  ListenerSubscriber<T> getSubscriber();
 }

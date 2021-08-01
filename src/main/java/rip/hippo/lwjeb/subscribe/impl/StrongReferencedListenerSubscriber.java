@@ -29,40 +29,41 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
- * This is a strong implementation of the listener subscriber, this should only be used for concurrent purposes, anything out side of is a waste.
+ * <p>
+ * This is a strong implementation of the listener subscriber, this should only be used for concurrent purposes, anything outside is a waste.
+ * </p>
  */
 public final class StrongReferencedListenerSubscriber<T> extends AbstractListenerSubscriber<T> {
 
-    /**
-     * The subscriber map.
-     * <p>
-     *     This only contains subscribed objects.
-     * </p>
-     */
-    private final ConcurrentHashMap<Class<T>, CopyOnWriteArrayList<MessageHandler<T>>> subscriberMap;
+  /**
+   * The subscriber map.
+   * <p>
+   * This only contains subscribed objects.
+   * </p>
+   */
+  private final ConcurrentHashMap<Class<T>, CopyOnWriteArrayList<MessageHandler<T>>> subscriberMap;
 
-    public StrongReferencedListenerSubscriber() {
-        this.subscriberMap = new ConcurrentHashMap<>();
-    }
+  public StrongReferencedListenerSubscriber() {
+    this.subscriberMap = new ConcurrentHashMap<>();
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void subscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
-        for (MessageHandler<T> cachedHandler : getCachedHandlers(parent, scanner, subscribeBus)) {
-            subscriberMap.computeIfAbsent(cachedHandler.getTopic(), ignored -> new CopyOnWriteArrayList<>()).add(cachedHandler);
-        }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void subscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
+    for (MessageHandler<T> cachedHandler : getCachedHandlers(parent, scanner, subscribeBus)) {
+      subscriberMap.computeIfAbsent(cachedHandler.getTopic(), ignored -> new CopyOnWriteArrayList<>()).add(cachedHandler);
     }
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public ConcurrentHashMap<Class<T>, CopyOnWriteArrayList<MessageHandler<T>>> subscriberMap() {
-        return subscriberMap;
-    }
+  /**
+   * @inheritDoc
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public ConcurrentHashMap<Class<T>, CopyOnWriteArrayList<MessageHandler<T>>> subscriberMap() {
+    return subscriberMap;
+  }
 
 }

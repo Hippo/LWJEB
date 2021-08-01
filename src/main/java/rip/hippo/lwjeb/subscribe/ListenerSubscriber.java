@@ -28,51 +28,52 @@ import java.util.Map;
  * @author Hippo
  * @version 5.0.0, 11/1/19
  * @since 5.0.0
- *
+ * <p>
  * A listener subscriber is made for subscribing objects to the bus.
  * This makes the object scannable therefore its handlers can be collected.
  * Any subscribed objects handlers will be invoked whenever its topic gets published.
+ * </p>
  */
 public interface ListenerSubscriber<T> {
 
-    /**
-     * Subscribes an object to the bus.
-     *
-     * @param parent  The object to subscribe.
-     * @param scanner  The scanner that will collect the objects handers.
-     * @param subscribeBus  The bus.
-     */
-    void subscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus);
+  /**
+   * Subscribes an object to the bus.
+   *
+   * @param parent       The object to subscribe.
+   * @param scanner      The scanner that will collect the objects handers.
+   * @param subscribeBus The bus.
+   */
+  void subscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus);
 
-    /**
-     * Un-subscribes an object to the bus.
-     *
-     * @param parent  The object to subscribe.
-     * @param scanner  The scanner that will collect the objects handers.
-     * @param subscribeBus  The bus.
-     */
-    void unsubscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus);
+  /**
+   * Un-subscribes an object to the bus.
+   *
+   * @param parent       The object to subscribe.
+   * @param scanner      The scanner that will collect the objects handers.
+   * @param subscribeBus The bus.
+   */
+  void unsubscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus);
 
-    /**
-     * Gets the subscriber map.
-     * <p>
-     *     Maps a class to a list of handlers.
-     * </p>
-     *
-     * @param <S>  The list of handlers.
-     * @param <U> The map.
-     * @return  The map.
-     */
-    <S extends List<MessageHandler<T>>, U extends Map<Class<T>, S>> U subscriberMap();
+  /**
+   * Gets the subscriber map.
+   * <p>
+   * Maps a class to a list of handlers.
+   * </p>
+   *
+   * @param <S> The list of handlers.
+   * @param <U> The map.
+   * @return The map.
+   */
+  <S extends List<MessageHandler<T>>, U extends Map<Class<T>, S>> U subscriberMap();
 
-    /**
-     * Gets the the message handlers that the subscriber cached.
-     *
-     * @param parent  The object.
-     * @param scanner  The scanner.
-     * @param subscribeBus  The bus.
-     * @return  The cached handlers.
-     */
-    List<MessageHandler<T>> getCachedHandlers(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus);
+  /**
+   * Gets the the message handlers that the subscriber cached.
+   *
+   * @param parent       The object.
+   * @param scanner      The scanner.
+   * @param subscribeBus The bus.
+   * @return The cached handlers.
+   */
+  List<MessageHandler<T>> getCachedHandlers(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus);
 
 }

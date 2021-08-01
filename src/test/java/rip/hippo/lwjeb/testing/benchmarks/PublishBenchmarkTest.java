@@ -21,7 +21,7 @@ import rip.hippo.lwjeb.bus.PubSub;
 import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
 import rip.hippo.lwjeb.message.publish.impl.ExperimentalMessagePublisher;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hippo

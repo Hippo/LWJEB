@@ -21,17 +21,18 @@ package rip.hippo.lwjeb.filter;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
+ * <p>
  * A message filter checks if a topic meets all the requirements to be invoked.
+ * </p>
  */
 @FunctionalInterface
 public interface MessageFilter<T> {
 
-    /**
-     * Checks if the {@code topic} passes the filter.
-     *
-     * @param topic  The topic.
-     * @return  Weather if it passes.
-     */
-    boolean passes(T topic);
+  /**
+   * Checks if the {@code topic} passes the filter.
+   *
+   * @param topic The topic.
+   * @return Weather if it passes.
+   */
+  boolean passes(T topic);
 }

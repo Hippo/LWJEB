@@ -28,34 +28,38 @@ import java.util.concurrent.TimeUnit;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
+ * <p>
  * This is a dead result, you will only get this if you post a topic and the bus can't find any handlers.
+ * </p>
  */
 public final class DeadMessagePublicationResult<T> implements MessagePublicationResult<T> {
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void async() {}
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void async() {
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void async(long timeout, TimeUnit timeUnit) {}
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void async(long timeout, TimeUnit timeUnit) {
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void dispatch() {}
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void dispatch() {
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<MessageHandler<T>> getHandlers() {
-        return Collections.emptyList();
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public List<MessageHandler<T>> getHandlers() {
+    return Collections.emptyList();
+  }
 }

@@ -26,17 +26,18 @@ import java.lang.annotation.Target;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
- * Marks a handler as a wropped type.
+ * <p>
+ * Marks a handler as a wrapped type.
+ * </p>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.FIELD})
 public @interface Wrapped {
 
-    /**
-     * The types that allow a handler to be invoked.
-     *
-     * @return  The types.
-     */
-    Class<?>[] value();
+  /**
+   * The types that allow a handler to be invoked.
+   *
+   * @return The types.
+   */
+  Class<?>[] value();
 }

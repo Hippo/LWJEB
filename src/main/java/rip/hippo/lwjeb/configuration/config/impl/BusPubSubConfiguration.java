@@ -29,105 +29,106 @@ import rip.hippo.lwjeb.subscribe.impl.WeakReferencedListenerSubscriber;
  * @author Hippo
  * @version 5.0.0, 10/27/19
  * @since 5.0.0
- *
+ * <p>
  * The pubsub configuration configures how all the handlers are handled. (subscribing, publishing, scanning)
+ * </p>
  */
 @SuppressWarnings("unchecked")
 public final class BusPubSubConfiguration implements Configuration<BusPubSubConfiguration> {
 
-    /**
-     * The subscriber.
-     */
-    private ListenerSubscriber subscriber;
+  /**
+   * The subscriber.
+   */
+  private ListenerSubscriber subscriber;
 
-    /**
-     * The publisher.
-     */
-    private MessagePublisher publisher;
+  /**
+   * The publisher.
+   */
+  private MessagePublisher publisher;
 
-    /**
-     * The scanner.
-     */
-    private MessageScanner scanner;
+  /**
+   * The scanner.
+   */
+  private MessageScanner scanner;
 
 
-    /**
-     * Gets the default configuration.
-     *
-     * @return  The default configuration.
-     */
-    public static BusPubSubConfiguration getDefault() {
-        return new BusPubSubConfiguration().provideDefault();
-    }
+  /**
+   * Gets the default configuration.
+   *
+   * @return The default configuration.
+   */
+  public static BusPubSubConfiguration getDefault() {
+    return new BusPubSubConfiguration().provideDefault();
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public BusPubSubConfiguration provideDefault() {
-        this.setSubscriber(new WeakReferencedListenerSubscriber<>());
-        this.setPublisher(new StandardMessagePublisher<>());
-        this.setScanner(new MethodBasedMessageScanner<>());
-        return this;
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public BusPubSubConfiguration provideDefault() {
+    this.setSubscriber(new WeakReferencedListenerSubscriber<>());
+    this.setPublisher(new StandardMessagePublisher<>());
+    this.setScanner(new MethodBasedMessageScanner<>());
+    return this;
+  }
 
-    /**
-     * Gets the subscriber.
-     *
-     * @param <T>  The topic.
-     * @return The subscriber.
-     */
-    public <T> ListenerSubscriber<T> getSubscriber() {
-        return subscriber;
-    }
+  /**
+   * Gets the subscriber.
+   *
+   * @param <T> The topic.
+   * @return The subscriber.
+   */
+  public <T> ListenerSubscriber<T> getSubscriber() {
+    return subscriber;
+  }
 
-    /**
-     * Sets the subscriber.
-     *
-     * @param subscriber  The subscriber.
-     * @param <T>  The topic.
-     */
-    public <T> void setSubscriber(ListenerSubscriber<T> subscriber) {
-        this.subscriber = subscriber;
-    }
+  /**
+   * Sets the subscriber.
+   *
+   * @param subscriber The subscriber.
+   * @param <T>        The topic.
+   */
+  public <T> void setSubscriber(ListenerSubscriber<T> subscriber) {
+    this.subscriber = subscriber;
+  }
 
-    /**
-     * Gets the publisher.
-     *
-     * @param <T>  The topic.
-     * @return The publisher.
-     */
-    public <T> MessagePublisher<T> getPublisher() {
-        return publisher;
-    }
+  /**
+   * Gets the publisher.
+   *
+   * @param <T> The topic.
+   * @return The publisher.
+   */
+  public <T> MessagePublisher<T> getPublisher() {
+    return publisher;
+  }
 
-    /**
-     * Sets the publisher.
-     *
-     * @param publisher  The publisher.
-     * @param <T>  The topic.
-     */
-    public <T> void setPublisher(MessagePublisher<T> publisher) {
-        this.publisher = publisher;
-    }
+  /**
+   * Sets the publisher.
+   *
+   * @param publisher The publisher.
+   * @param <T>       The topic.
+   */
+  public <T> void setPublisher(MessagePublisher<T> publisher) {
+    this.publisher = publisher;
+  }
 
-    /**
-     * Gets the scanner.
-     *
-     * @param <T>  The topic.
-     * @return The scanner.
-     */
-    public <T> MessageScanner<T> getScanner() {
-        return scanner;
-    }
+  /**
+   * Gets the scanner.
+   *
+   * @param <T> The topic.
+   * @return The scanner.
+   */
+  public <T> MessageScanner<T> getScanner() {
+    return scanner;
+  }
 
-    /**
-     * Sets the scanner.
-     *
-     * @param scanner  THe scanner.
-     * @param <T>  The topic.
-     */
-    public <T> void setScanner(MessageScanner<T> scanner) {
-        this.scanner = scanner;
-    }
+  /**
+   * Sets the scanner.
+   *
+   * @param scanner THe scanner.
+   * @param <T>     The topic.
+   */
+  public <T> void setScanner(MessageScanner<T> scanner) {
+    this.scanner = scanner;
+  }
 }

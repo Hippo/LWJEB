@@ -26,22 +26,23 @@ import rip.hippo.lwjeb.message.result.impl.DeadMessagePublicationResult;
  * @author Hippo
  * @version 5.0.0, 10/27/19
  * @since 5.0.0
- *
+ * <p>
  * A message publisher is responsible for posting topics and returning results.
+ * </p>
  */
 @FunctionalInterface
 public interface MessagePublisher<T> {
 
-    /**
-     * Post {@code topic} and returns the result.
-     *
-     * <p>
-     *     Returns {@link DeadMessagePublicationResult} if it can't find any handlers.
-     * </p>
-     *
-     * @param topic  The topic.
-     * @param messageBus  The bus.
-     * @return  The result.
-     */
-    MessagePublicationResult<T> publish(T topic, AbstractAsynchronousPubSubMessageBus<T> messageBus);
+  /**
+   * Post {@code topic} and returns the result.
+   *
+   * <p>
+   * Returns {@link DeadMessagePublicationResult} if it can't find any handlers.
+   * </p>
+   *
+   * @param topic      The topic.
+   * @param messageBus The bus.
+   * @return The result.
+   */
+  MessagePublicationResult<T> publish(T topic, AbstractAsynchronousPubSubMessageBus<T> messageBus);
 }

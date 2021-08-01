@@ -25,49 +25,50 @@ import rip.hippo.lwjeb.configuration.exception.handle.impl.StandardExceptionHand
  * @author Hippo
  * @version 5.0.0, 10/30/19
  * @since 5.0.0
- *
+ * <p>
  * The exception handling configuration allows you to configure how your errors are handled.
+ * </p>
  */
 public final class ExceptionHandlingConfiguration implements Configuration<ExceptionHandlingConfiguration> {
 
-    /**
-     * The exception handler.
-     */
-    private ExceptionHandler exceptionHandler;
+  /**
+   * The exception handler.
+   */
+  private ExceptionHandler exceptionHandler;
 
-    /**
-     * Gets the default config.
-     *
-     * @return  The default config.
-     */
-    public static ExceptionHandlingConfiguration getDefault() {
-        return new ExceptionHandlingConfiguration().provideDefault();
-    }
+  /**
+   * Gets the default config.
+   *
+   * @return The default config.
+   */
+  public static ExceptionHandlingConfiguration getDefault() {
+    return new ExceptionHandlingConfiguration().provideDefault();
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public ExceptionHandlingConfiguration provideDefault() {
-        this.setExceptionHandler(StandardExceptionHandler.INSTANCE);
-        return this;
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public ExceptionHandlingConfiguration provideDefault() {
+    this.setExceptionHandler(StandardExceptionHandler.INSTANCE);
+    return this;
+  }
 
-    /**
-     * Gets the exception handler.
-     *
-     * @return  The exception handler.
-     */
-    public ExceptionHandler getExceptionHandler() {
-        return exceptionHandler;
-    }
+  /**
+   * Gets the exception handler.
+   *
+   * @return The exception handler.
+   */
+  public ExceptionHandler getExceptionHandler() {
+    return exceptionHandler;
+  }
 
-    /**
-     * Sets the exception handler.
-     *
-     * @param exceptionHandler  The exception handler.
-     */
-    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
-        this.exceptionHandler = exceptionHandler;
-    }
+  /**
+   * Sets the exception handler.
+   *
+   * @param exceptionHandler The exception handler.
+   */
+  public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+    this.exceptionHandler = exceptionHandler;
+  }
 }

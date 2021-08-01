@@ -23,18 +23,19 @@ import rip.hippo.lwjeb.configuration.exception.handle.ExceptionHandler;
  * @author Hippo
  * @version 5.0.0, 10/30/19
  * @since 5.0.0
- *
+ * <p>
  * The standard handler simply just prints the stack trace.
+ * </p>
  */
 public enum StandardExceptionHandler implements ExceptionHandler {
-    INSTANCE;
+  INSTANCE;
 
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void handleException(Throwable t) {
-        t.printStackTrace();
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void handleException(Throwable t) {
+    t.printStackTrace();
+  }
 }

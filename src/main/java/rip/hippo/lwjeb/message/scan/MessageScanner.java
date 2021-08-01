@@ -26,18 +26,19 @@ import java.util.List;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
+ * <p>
  * A message scanner searches through an object and finds message handlers.
+ * </p>
  */
 @FunctionalInterface
 public interface MessageScanner<T> {
 
-    /**
-     * Gets all the message handlers in an object.
-     *
-     * @param parent  The object to scan.
-     * @param messageBus  The bus.
-     * @return The handlers.
-     */
-    List<MessageHandler<T>> scan(Object parent, SubscribeMessageBus<T> messageBus);
+  /**
+   * Gets all the message handlers in an object.
+   *
+   * @param parent     The object to scan.
+   * @param messageBus The bus.
+   * @return The handlers.
+   */
+  List<MessageHandler<T>> scan(Object parent, SubscribeMessageBus<T> messageBus);
 }

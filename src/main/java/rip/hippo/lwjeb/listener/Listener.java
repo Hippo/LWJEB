@@ -22,18 +22,19 @@ package rip.hippo.lwjeb.listener;
  * @author Hippo
  * @version 5.0.1, 12/2/19
  * @since 5.0.0
- *
+ * <p>
  * A listener is used to invoke handlers.
+ * </p>
  */
 @FunctionalInterface
 public interface Listener {
 
-    /**
-     * Invokes the handler.
-     *
-     * @param parent  The parent.
-     * @param topic  The topic.
-     * @throws ReflectiveOperationException  If there is an error invoking the handler.
-     */
-    void invoke(Object parent, Object topic);
+  /**
+   * Invokes the handler.
+   *
+   * @param parent The parent.
+   * @param topic  The topic.
+   * @throws ReflectiveOperationException If there is an error invoking the handler.
+   */
+  void invoke(Object parent, Object topic);
 }

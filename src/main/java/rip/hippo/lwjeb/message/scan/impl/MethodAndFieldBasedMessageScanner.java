@@ -28,19 +28,20 @@ import java.util.List;
  * @author Hippo
  * @version 5.0.0, 1/13/20
  * @since 5.0.0
- *
+ * <p>
  * This is a method and field based implementation of the message scanner, this will search for both method and fields.
+ * </p>
  */
 public final class MethodAndFieldBasedMessageScanner<T> implements MessageScanner<T> {
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<MessageHandler<T>> scan(Object parent, SubscribeMessageBus<T> messageBus) {
-        List<MessageHandler<T>> messageHandlers = new ArrayList<>();
-        messageHandlers.addAll(new MethodBasedMessageScanner<T>().scan(parent, messageBus));
-        messageHandlers.addAll(new FieldBasedMessageScanner<T>().scan(parent, messageBus));
-        return messageHandlers;
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public List<MessageHandler<T>> scan(Object parent, SubscribeMessageBus<T> messageBus) {
+    List<MessageHandler<T>> messageHandlers = new ArrayList<>();
+    messageHandlers.addAll(new MethodBasedMessageScanner<T>().scan(parent, messageBus));
+    messageHandlers.addAll(new FieldBasedMessageScanner<T>().scan(parent, messageBus));
+    return messageHandlers;
+  }
 }

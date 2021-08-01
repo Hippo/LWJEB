@@ -29,43 +29,44 @@ import java.util.Map;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
+ * <p>
  * This is an abstract implementation of {@link ListenerSubscriber}, this just implements methods that typically wouldn't change per concrete implementation.
+ * </p>
  */
 public abstract class AbstractListenerSubscriber<T> implements ListenerSubscriber<T> {
 
-    /**
-     * The cache map.
-     * <p>
-     *     Once an object is subscribed it will be added to the cache map, this makes second run subscribing much faster.
-     * </p>
-     */
-    private final Map<Object, List<MessageHandler<T>>> cacheMap;
+  /**
+   * The cache map.
+   * <p>
+   * Once an object is subscribed it will be added to the cache map, this makes second run subscribing much faster.
+   * </p>
+   */
+  private final Map<Object, List<MessageHandler<T>>> cacheMap;
 
-    protected AbstractListenerSubscriber() {
-        cacheMap = new HashMap<>();
+  protected AbstractListenerSubscriber() {
+    cacheMap = new HashMap<>();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void unsubscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
+    List<MessageHandler<T>> cached = getCachedHandlers(parent, scanner, subscribeBus);
+    for (MessageHandler<T> messageHandler : cached) {
+      List<MessageHandler<T>> messageHandlers = subscriberMap().get(messageHandler.getTopic());
+      if (messageHandlers != null) {
+        messageHandlers.remove(messageHandler);
+      }
     }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void unsubscribe(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
-        List<MessageHandler<T>> cached = getCachedHandlers(parent, scanner, subscribeBus);
-        for (MessageHandler<T> messageHandler : cached) {
-            List<MessageHandler<T>> messageHandlers = subscriberMap().get(messageHandler.getTopic());
-            if(messageHandlers != null) {
-                messageHandlers.remove(messageHandler);
-            }
-        }
-    }
+  }
 
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<MessageHandler<T>> getCachedHandlers(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
-        return cacheMap.computeIfAbsent(parent, ignored -> scanner.scan(parent, subscribeBus));
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public List<MessageHandler<T>> getCachedHandlers(Object parent, MessageScanner<T> scanner, SubscribeMessageBus<T> subscribeBus) {
+    return cacheMap.computeIfAbsent(parent, ignored -> scanner.scan(parent, subscribeBus));
+  }
 }

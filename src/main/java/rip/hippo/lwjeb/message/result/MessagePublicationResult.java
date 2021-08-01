@@ -26,34 +26,35 @@ import java.util.concurrent.TimeUnit;
  * @author Hippo
  * @version 5.0.0, 10/30/19
  * @since 5.0.0
- *
+ * <p>
  * A publication result is what you get whenever you post a topic, this will give you more control on how you handle your publications.
+ * </p>
  */
 public interface MessagePublicationResult<T> {
 
-    /**
-     * This will immediately invoke all the handlers on the main thread.
-     */
-    void dispatch();
+  /**
+   * This will immediately invoke all the handlers on the main thread.
+   */
+  void dispatch();
 
-    /**
-     * This will add the result to the asynchronous queue then it will be dispatched as soon as it can.
-     */
-    void async();
+  /**
+   * This will add the result to the asynchronous queue then it will be dispatched as soon as it can.
+   */
+  void async();
 
-    /**
-     * This will add the result to the asynchronous queue if {@code timeout} has been reached then it will be removed.
-     *
-     * @param timeout The time out.
-     * @param timeUnit  The time unit.
-     */
-    void async(long timeout, TimeUnit timeUnit);
+  /**
+   * This will add the result to the asynchronous queue if {@code timeout} has been reached then it will be removed.
+   *
+   * @param timeout  The time out.
+   * @param timeUnit The time unit.
+   */
+  void async(long timeout, TimeUnit timeUnit);
 
-    /**
-     * Gets all the handlers in the result.
-     *
-     * @return  The handlers.
-     */
-    List<MessageHandler<T>> getHandlers();
+  /**
+   * Gets all the handlers in the result.
+   *
+   * @return The handlers.
+   */
+  List<MessageHandler<T>> getHandlers();
 
 }

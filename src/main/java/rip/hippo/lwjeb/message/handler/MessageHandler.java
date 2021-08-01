@@ -23,50 +23,58 @@ import rip.hippo.lwjeb.filter.MessageFilter;
  * @author Hippo
  * @version 5.0.0, 10/27/19
  * @since 5.0.0
- *
+ * <p>
  * A message handler handles what happens whenever a topic is posed, typically done thorough method invocation.
  * May or may not have filters.
+ * </p>
  */
 public interface MessageHandler<T> {
 
-    /**
-     * Handles the topic.
-     * <p>
-     *     Invoked whenever {@code topic} is posted.
-     * </p>
-     *
-     * @param topic  The topic.
-     */
-    void handle(T topic);
+  /**
+   * Handles the topic.
+   * <p>
+   * Invoked whenever {@code topic} is posted.
+   * </p>
+   *
+   * @param topic The topic.
+   */
+  void handle(T topic);
 
-    /**
-     * Gets the topic.
-     *
-     * @return  The topic.
-     */
-    Class<T> getTopic();
+  /**
+   * Gets the topic.
+   *
+   * @return The topic.
+   */
+  Class<T> getTopic();
 
-    /**
-     * Gets the filters.
-     *
-     * @return  The filters.
-     */
-    MessageFilter<T>[] filters();
+  /**
+   * Gets the filters.
+   *
+   * @return The filters.
+   */
+  MessageFilter<T>[] getFilters();
 
-    /**
-     * Checks if {@code topic} passes all the filters.
-     *
-     * @param topic  The topic.
-     * @return  weather if it passes all the filters.
-     */
-    default boolean passesFilters(T topic) {
-        for (MessageFilter<T> filter : filters()) {
-            if(!filter.passes(topic)) {
-                return false;
-            }
-        }
-        return true;
+  /**
+   * Gets the priority.
+   *
+   * @return The priority
+   */
+  int getPriority();
+
+  /**
+   * Checks if {@code topic} passes all the filters.
+   *
+   * @param topic The topic.
+   * @return weather if it passes all the filters.
+   */
+  default boolean passesFilters(T topic) {
+    for (MessageFilter<T> filter : getFilters()) {
+      if (!filter.passes(topic)) {
+        return false;
+      }
     }
+    return true;
+  }
 
 
 }

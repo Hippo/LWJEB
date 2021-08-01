@@ -19,7 +19,7 @@ package rip.hippo.lwjeb.testing.standard;
 
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.ListenerFactoryConfiguration;
 import rip.hippo.lwjeb.configuration.invocation.impl.DirectListenerFactory;

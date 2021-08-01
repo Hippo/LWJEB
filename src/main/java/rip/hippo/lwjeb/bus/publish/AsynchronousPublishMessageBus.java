@@ -26,56 +26,57 @@ import java.util.concurrent.TimeUnit;
  * @author Hippo
  * @version 5.0.1, 10/26/19
  * @since 5.0.0
- *
+ * <p>
  * An asynchronous publisher allows messages to be published asynchronously.
+ * </p>
  */
 public interface AsynchronousPublishMessageBus<T> extends PublishMessageBus<T> {
 
-    /**
-     * Sets up all the dispatchers.
-     *
-     * <p>
-     *     A dispatcher is a thread that is dedicated to handling topics.
-     * </p>
-     */
-    void setupDispatchers();
+  /**
+   * Sets up all the dispatchers.
+   *
+   * <p>
+   * A dispatcher is a thread that is dedicated to handling topics.
+   * </p>
+   */
+  void setupDispatchers();
 
-    /**
-     * Adds a publish result to the asynchronous queue.
-     *
-     * @param result  The result.
-     */
-    void addMessage(MessagePublicationResult<T> result);
+  /**
+   * Adds a publish result to the asynchronous queue.
+   *
+   * @param result The result.
+   */
+  void addMessage(MessagePublicationResult<T> result);
 
-    /**
-     * Adds a publish result to the asynchronous queue, if the result hasn't been handled in enough time then it will be removed from the queue.
-     *
-     * @param result  The result.
-     * @param timeout  The timout.
-     * @param timeUnit  The time unit.
-     */
-    void addMessage(MessagePublicationResult<T> result, long timeout, TimeUnit timeUnit);
+  /**
+   * Adds a publish result to the asynchronous queue, if the result hasn't been handled in enough time then it will be removed from the queue.
+   *
+   * @param result   The result.
+   * @param timeout  The timout.
+   * @param timeUnit The time unit.
+   */
+  void addMessage(MessagePublicationResult<T> result, long timeout, TimeUnit timeUnit);
 
-    /**
-     * Shuts down all the dispatchers once no tasks are left to complete, there is also a delay to ensure no last minute tasks are being scheduled.
-     *
-     * <p>
-     *     This is only used if the dispatchers have been started.
-     *     Default time is 250ms.
-     * </p>
-     */
-    void shutdown();
+  /**
+   * Shuts down all the dispatchers once no tasks are left to complete, there is also a delay to ensure no last minute tasks are being scheduled.
+   *
+   * <p>
+   * This is only used if the dispatchers have been started.
+   * Default time is 250ms.
+   * </p>
+   */
+  void shutdown();
 
-    /**
-     * Shuts down all the dispatchers once the time limit has reached.
-     *
-     * @param delay  The delay.
-     * @param timeUnit  The unit.
-     */
-    void shutdown(int delay, TimeUnit timeUnit);
+  /**
+   * Shuts down all the dispatchers once the time limit has reached.
+   *
+   * @param delay    The delay.
+   * @param timeUnit The unit.
+   */
+  void shutdown(int delay, TimeUnit timeUnit);
 
-    /**
-     * Forcefully shuts down all dispatchers disregarding if there is uncompleted tasks or not.
-     */
-    void forceShutdown();
+  /**
+   * Forcefully shuts down all dispatchers disregarding if there is uncompleted tasks or not.
+   */
+  void forceShutdown();
 }

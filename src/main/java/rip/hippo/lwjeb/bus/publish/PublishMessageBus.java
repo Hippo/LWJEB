@@ -24,15 +24,16 @@ import rip.hippo.lwjeb.message.publish.MessagePublisher;
  * @author Hippo
  * @version 5.0.0, 10/26/19
  * @since 5.0.0
- *
+ * <p>
  * A publish bus extends the functionality to allow topics to be published.
+ * </p>
  */
 public interface PublishMessageBus<T> extends MessageBus {
 
-    /**
-     * Gets the publisher.
-     *
-     * @return  The publisher.
-     */
-    MessagePublisher<T> getPublisher();
+  /**
+   * Gets the publisher.
+   *
+   * @return The publisher.
+   */
+  MessagePublisher<T> getPublisher();
 }

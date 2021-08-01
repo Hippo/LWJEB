@@ -28,31 +28,32 @@ import java.util.Date;
  * @author Hippo
  * @version 5.0.0, 10/30/19
  * @since 5.0.0
- *
+ * <p>
  * The descriptive handler prints the stack trace and some information about the jvm.
+ * </p>
  */
 public enum DescriptiveExceptionHandler implements ExceptionHandler {
-    INSTANCE;
+  INSTANCE;
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void handleException(Throwable t) {
-        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void handleException(Throwable t) {
+    RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
 
-        StringBuilder jvmArguments = new StringBuilder();
-        for (String jvmArgument : runtimeMXBean.getInputArguments()) {
-            jvmArguments.append(jvmArgument).append(' ');
-        }
-
-        System.err.println(DateFormat.getInstance().format(new Date()));
-        System.err.println("\nAn exception was thrown, " + t.toString());
-        System.err.println("Stacktrace:");
-        t.printStackTrace();
-        System.err.println("\nCurrent java version: " + System.getProperty("java.version"));
-        System.err.println("JVM Arguments: " + jvmArguments.toString());
-        System.err.println("JVM Information: " + runtimeMXBean.getVmName() + " | " + runtimeMXBean.getVmVendor() + " | " + runtimeMXBean.getVmVersion());
-        System.err.println("Memory: " + Runtime.getRuntime().totalMemory() + "/" + Runtime.getRuntime().maxMemory());
+    StringBuilder jvmArguments = new StringBuilder();
+    for (String jvmArgument : runtimeMXBean.getInputArguments()) {
+      jvmArguments.append(jvmArgument).append(' ');
     }
+
+    System.err.println(DateFormat.getInstance().format(new Date()));
+    System.err.println("\nAn exception was thrown, " + t.toString());
+    System.err.println("Stacktrace:");
+    t.printStackTrace();
+    System.err.println("\nCurrent java version: " + System.getProperty("java.version"));
+    System.err.println("JVM Arguments: " + jvmArguments);
+    System.err.println("JVM Information: " + runtimeMXBean.getVmName() + " | " + runtimeMXBean.getVmVendor() + " | " + runtimeMXBean.getVmVersion());
+    System.err.println("Memory: " + Runtime.getRuntime().totalMemory() + "/" + Runtime.getRuntime().maxMemory());
+  }
 }

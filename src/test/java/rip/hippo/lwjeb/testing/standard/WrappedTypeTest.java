@@ -7,7 +7,7 @@ import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
 import rip.hippo.lwjeb.message.scan.impl.MethodAndFieldBasedMessageScanner;
 import rip.hippo.lwjeb.wrapped.WrappedType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.function.Consumer;
 

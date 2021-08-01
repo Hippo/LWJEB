@@ -30,109 +30,110 @@ import java.util.Map;
  * @author Hippo
  * @version 5.0.0, 11/1/19
  * @since 5.0.0
- *
+ * <p>
  * A concrete implementation of all the busses, this will fit almost every single case.
  * This bus has a result cache, to speed up publications.
+ * </p>
  */
 public final class PubSub<T> extends AbstractAsynchronousPubSubMessageBus<T> {
 
-    /**
-     * The listener subscriber.
-     */
-    private final ListenerSubscriber<T> listenerSubscriber;
+  /**
+   * The listener subscriber.
+   */
+  private final ListenerSubscriber<T> listenerSubscriber;
 
-    /**
-     * The message publisher.
-     */
-    private final MessagePublisher<T> messagePublisher;
+  /**
+   * The message publisher.
+   */
+  private final MessagePublisher<T> messagePublisher;
 
-    /**
-     * The bus configurations.
-     */
-    private final BusPubSubConfiguration busPubSubConfiguration;
+  /**
+   * The bus configurations.
+   */
+  private final BusPubSubConfiguration busPubSubConfiguration;
 
-    /**
-     * The result cache.
-     */
-    private final Map<Object, MessagePublicationResult<T>> resultCache;
+  /**
+   * The result cache.
+   */
+  private final Map<Object, MessagePublicationResult<T>> resultCache;
 
 
-    /**
-     * Creates a new {@link PubSub} with the default configuration.
-     */
-    public PubSub() {
-        this(BusConfigurations.getDefault());
+  /**
+   * Creates a new {@link PubSub} with the default configuration.
+   */
+  public PubSub() {
+    this(BusConfigurations.getDefault());
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public PubSub(BusConfigurations busConfigurations) {
+    super(busConfigurations);
+    this.busPubSubConfiguration = busConfigurations.get(BusPubSubConfiguration.class);
+    this.listenerSubscriber = busPubSubConfiguration.getSubscriber();
+    this.messagePublisher = busPubSubConfiguration.getPublisher();
+    this.resultCache = new HashMap<>();
+  }
+
+
+  /**
+   * Post {@code topic}.
+   *
+   * @param topic The topic.
+   * @return The result.
+   */
+  public MessagePublicationResult<T> post(T topic) {
+    MessagePublicationResult<T> result = resultCache.get(topic);
+    if (result == null) {
+      MessagePublicationResult<T> publish = messagePublisher.publish(topic, this);
+      resultCache.put(topic, publish);
+      return publish;
     }
+    return result;
+  }
 
-    /**
-     * @inheritDoc
-     */
-    public PubSub(BusConfigurations busConfigurations) {
-        super(busConfigurations);
-        this.busPubSubConfiguration = busConfigurations.get(BusPubSubConfiguration.class);
-        this.listenerSubscriber = busPubSubConfiguration.getSubscriber();
-        this.messagePublisher = busPubSubConfiguration.getPublisher();
-        this.resultCache = new HashMap<>();
-    }
+  /**
+   * Subscribes {@code parent}.
+   *
+   * @param parent The parent.
+   */
+  public void subscribe(Object parent) {
+    invalidateCaches();
+    listenerSubscriber.subscribe(parent, busPubSubConfiguration.getScanner(), this);
+  }
 
+  /**
+   * Un-subscribes {@code parent}.
+   *
+   * @param parent The parent.
+   */
+  public void unsubscribe(Object parent) {
+    invalidateCaches();
+    listenerSubscriber.unsubscribe(parent, busPubSubConfiguration.getScanner(), this);
+  }
 
-    /**
-     * Post {@code topic}.
-     *
-     * @param topic  The topic.
-     * @return  The result.
-     */
-    public MessagePublicationResult<T> post(T topic) {
-        MessagePublicationResult<T> result = resultCache.get(topic);
-        if(result == null) {
-            MessagePublicationResult<T> publish = messagePublisher.publish(topic, this);
-            resultCache.put(topic, publish);
-            return publish;
-        }
-        return result;
-    }
+  /**
+   * Clears all the result caches.
+   */
+  public void invalidateCaches() {
+    resultCache.clear();
+  }
 
-    /**
-     * Subscribes {@code parent}.
-     *
-     * @param parent  The parent.
-     */
-    public void subscribe(Object parent) {
-        invalidateCaches();
-        listenerSubscriber.subscribe(parent, busPubSubConfiguration.getScanner(), this);
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public MessagePublisher<T> getPublisher() {
+    return messagePublisher;
+  }
 
-    /**
-     * Un-subscribes {@code parent}.
-     *
-     * @param parent  The parent.
-     */
-    public void unsubscribe(Object parent) {
-       invalidateCaches();
-       listenerSubscriber.unsubscribe(parent, busPubSubConfiguration.getScanner(), this);
-    }
-
-    /**
-     * Clears all the result caches.
-     */
-    public void invalidateCaches() {
-        resultCache.clear();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public MessagePublisher<T> getPublisher() {
-        return messagePublisher;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public ListenerSubscriber<T> getSubscriber() {
-        return listenerSubscriber;
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public ListenerSubscriber<T> getSubscriber() {
+    return listenerSubscriber;
+  }
 
 }

@@ -21,6 +21,7 @@ import rip.hippo.lwjeb.bus.publish.AsynchronousPublishMessageBus;
 import rip.hippo.lwjeb.message.handler.MessageHandler;
 import rip.hippo.lwjeb.message.result.MessagePublicationResult;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -28,72 +29,74 @@ import java.util.concurrent.TimeUnit;
  * @author Hippo
  * @version 5.0.0, 11/2/19
  * @since 5.0.0
- *
- * This is a standard result, it allows filters to be used, this will be fine forr most cases
+ * <p>
+ * This is a standard result, it allows filters to be used, this will be fine for most cases
+ * </p>
  */
 public final class StandardMessagePublicationResult<T> implements MessagePublicationResult<T> {
 
-    /**
-     * The bus.
-     */
-    private final AsynchronousPublishMessageBus<T> publishBus;
+  /**
+   * The bus.
+   */
+  private final AsynchronousPublishMessageBus<T> publishBus;
 
-    /**
-     * The list of handlers.
-     */
-    private final List<MessageHandler<T>> handlers;
+  /**
+   * The list of handlers.
+   */
+  private final List<MessageHandler<T>> handlers;
 
-    /**
-     * The topic.
-     */
-    private final T topic;
+  /**
+   * The topic.
+   */
+  private final T topic;
 
-    /**
-     * Creates a new {@link StandardMessagePublicationResult} with the desired bus, handlers, and topic.
-     *
-     * @param publishBus  The bus.
-     * @param handlers  The handlers.
-     * @param topic  The topic.
-     */
-    public StandardMessagePublicationResult(AsynchronousPublishMessageBus<T> publishBus, List<MessageHandler<T>> handlers, T topic) {
-        this.publishBus = publishBus;
-        this.handlers = handlers;
-        this.topic = topic;
+  /**
+   * Creates a new {@link StandardMessagePublicationResult} with the desired bus, handlers, and topic.
+   *
+   * @param publishBus The bus.
+   * @param handlers   The handlers.
+   * @param topic      The topic.
+   */
+  public StandardMessagePublicationResult(AsynchronousPublishMessageBus<T> publishBus, List<MessageHandler<T>> handlers, T topic) {
+    handlers.sort(Comparator.comparingInt(MessageHandler::getPriority));
+    this.publishBus = publishBus;
+    this.handlers = handlers;
+    this.topic = topic;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void async() {
+    publishBus.addMessage(this);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void async(long timeout, TimeUnit timeUnit) {
+    publishBus.addMessage(this, timeout, timeUnit);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public void dispatch() {
+    for (MessageHandler<T> handler : handlers) {
+      if (handler.passesFilters(topic)) {
+        handler.handle(topic);
+      }
     }
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void async() {
-        publishBus.addMessage(this);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void async(long timeout, TimeUnit timeUnit) {
-        publishBus.addMessage(this, timeout, timeUnit);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void dispatch() {
-        for (MessageHandler<T> handler : handlers) {
-            if(handler.passesFilters(topic)) {
-                handler.handle(topic);
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<MessageHandler<T>> getHandlers() {
-        return handlers;
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public List<MessageHandler<T>> getHandlers() {
+    return handlers;
+  }
 }

@@ -27,69 +27,87 @@ import java.util.function.Consumer;
  * @author Hippo
  * @version 5.0.0, 1/13/20
  * @since 5.0.0
- *
+ * <p>
  * This is a field based implementation of the message handler.
+ * </p>
  */
 public final class FieldBasedMessageHandler<T> implements MessageHandler<T> {
 
-    /**
-     * The topic.
-     */
-    private final Class<T> topic;
+  /**
+   * The topic.
+   */
+  private final Class<T> topic;
 
-    /**
-     * The filters.
-     */
-    private final MessageFilter<T>[] filters;
+  /**
+   * The filters.
+   */
+  private final MessageFilter<T>[] filters;
 
-    /**
-     * The listener consumer, used for invocation.
-     */
-    private final Consumer<T> listenerConsumer;
+  /**
+   * The listener consumer, used for invocation.
+   */
+  private final Consumer<T> listenerConsumer;
 
-    /**
-     * Weather the handler is for {@link WrappedType}s.
-     */
-    private final boolean wrapped;
+  /**
+   * Weather the handler is for {@link WrappedType}s.
+   */
+  private final boolean wrapped;
 
+  /**
+   * The priority of the handler.
+   */
+  private final int priority;
 
-    /**
-     * Creates a new {@link FieldBasedMessageHandler}.
-     *
-     * @param topic  The topic.
-     * @param filters  The filters.
-     * @param listenerConsumer  The listener.
-     * @param wrapped  Weather its wrapped or not.
-     */
-    public FieldBasedMessageHandler(Class<T> topic, MessageFilter<T>[] filters, Consumer<T> listenerConsumer, boolean wrapped) {
-        this.topic = topic;
-        this.filters = filters;
-        this.listenerConsumer = listenerConsumer;
-        this.wrapped = wrapped;
-    }
+  /**
+   * Creates a new {@link FieldBasedMessageHandler}.
+   *
+   * @param topic            The topic.
+   * @param filters          The filters.
+   * @param listenerConsumer The listener.
+   * @param wrapped          Weather its wrapped or not.
+   */
+  public FieldBasedMessageHandler(Class<T> topic,
+                                  MessageFilter<T>[] filters,
+                                  Consumer<T> listenerConsumer,
+                                  boolean wrapped,
+                                  int priority) {
+    this.topic = topic;
+    this.filters = filters;
+    this.listenerConsumer = listenerConsumer;
+    this.wrapped = wrapped;
+    this.priority = priority;
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void handle(T topic) {
-        listenerConsumer.accept(wrapped ? (T) new WrappedType(topic) : topic);
-    }
+  /**
+   * @inheritDoc
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public void handle(T topic) {
+    listenerConsumer.accept(wrapped ? (T) new WrappedType(topic) : topic);
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public Class<T> getTopic() {
-        return topic;
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public Class<T> getTopic() {
+    return topic;
+  }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public MessageFilter<T>[] filters() {
-        return filters;
-    }
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public MessageFilter<T>[] getFilters() {
+    return filters;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  @Override
+  public int getPriority() {
+    return priority;
+  }
 }

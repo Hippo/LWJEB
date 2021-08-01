@@ -28,71 +28,71 @@ import rip.hippo.lwjeb.listener.ListenerClassLoader;
  */
 public final class BusConfiguration implements Configuration<BusConfiguration> {
 
-    /**
-     * The identifier, or name, of the bus.
-     */
-    private String identifier;
+  /**
+   * The identifier, or name, of the bus.
+   */
+  private String identifier;
 
-    /**
-     * The class loader it will use to load dynamic invocation classes.
-     */
-    private ListenerClassLoader listenerClassLoader;
+  /**
+   * The class loader it will use to load dynamic invocation classes.
+   */
+  private ListenerClassLoader listenerClassLoader;
 
-    /**
-     * Static wrapper to provide the default bus configuration.
-     *
-     * @return  The bus configuration.
-     */
-    public static BusConfiguration getDefault() {
-        return new BusConfiguration().provideDefault();
-    }
+  /**
+   * Static wrapper to provide the default bus configuration.
+   *
+   * @return The bus configuration.
+   */
+  public static BusConfiguration getDefault() {
+    return new BusConfiguration().provideDefault();
+  }
 
-    /**
-     * Provides the default bus configuration.
-     *
-     * @return  The bus configuration.
-     */
-    @Override
-    public BusConfiguration provideDefault() {
-        this.setIdentifier("LWJEB");
-        this.setListenerClassLoader(new ListenerClassLoader(this.getClass().getClassLoader()));
-        return this;
-    }
+  /**
+   * Provides the default bus configuration.
+   *
+   * @return The bus configuration.
+   */
+  @Override
+  public BusConfiguration provideDefault() {
+    this.setIdentifier("LWJEB");
+    this.setListenerClassLoader(new ListenerClassLoader(this.getClass().getClassLoader()));
+    return this;
+  }
 
-    /**
-     * Gets the bus identifier.
-     *
-     * @return  The identifier.
-     */
-    public String getIdentifier() {
-        return identifier;
-    }
+  /**
+   * Gets the bus identifier.
+   *
+   * @return The identifier.
+   */
+  public String getIdentifier() {
+    return identifier;
+  }
 
-    /**
-     * Sets the bus identifier.
-     *
-     * @param identifier  The new identifier.
-     */
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
+  /**
+   * Sets the bus identifier.
+   *
+   * @param identifier The new identifier.
+   */
+  public void setIdentifier(String identifier) {
+    this.identifier = identifier;
+  }
 
-    /**
-     * Gets the listener class loader
-     *
-     * @return The listener class loader
-     */
-    public ListenerClassLoader getListenerClassLoader() {
-        return listenerClassLoader;
-    }
+  /**
+   * Gets the listener class loader
+   *
+   * @return The listener class loader
+   */
+  public ListenerClassLoader getListenerClassLoader() {
+    return listenerClassLoader;
+  }
 
-    /**
-     * Sets the listener class loader
-     *
-     * @param listenerClassLoader Listener class loader
-     */
-    public void setListenerClassLoader(ListenerClassLoader listenerClassLoader) {
-        this.listenerClassLoader = listenerClassLoader;
-    }
+  /**
+   * Sets the listener class loader
+   *
+   * @param listenerClassLoader Listener class loader
+   */
+  public void setListenerClassLoader(ListenerClassLoader listenerClassLoader) {
+    this.listenerClassLoader = listenerClassLoader;
+  }
 
 }

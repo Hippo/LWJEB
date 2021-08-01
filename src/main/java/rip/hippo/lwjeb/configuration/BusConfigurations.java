@@ -30,89 +30,90 @@ import java.util.function.Supplier;
  * @author Hippo
  * @version 5.0.1, 10/26/19
  * @since 5.0.0
- *
+ * <p>
  * The bus configurations hold all the configuration instances.
+ * </p>
  */
 public final class BusConfigurations {
+
+  /**
+   * The configuration map.
+   */
+  private final Map<Class<? extends Configuration<?>>, Configuration<?>> configurationMap;
+
+
+  private BusConfigurations(Builder builder) {
+    this.configurationMap = builder == null ? new HashMap<>() : builder.configurationMap;
+  }
+
+  /**
+   * Gets the default configuration.
+   * <p>
+   * This configuration will be good for most non-concurrent cases.
+   * </p>
+   *
+   * @return The default configuration.
+   */
+  public static BusConfigurations getDefault() {
+    BusConfigurations configurations = new BusConfigurations(null);
+    configurations.configurationMap.put(AsynchronousPublicationConfiguration.class, AsynchronousPublicationConfiguration.getDefault());
+    configurations.configurationMap.put(BusConfiguration.class, BusConfiguration.getDefault());
+    configurations.configurationMap.put(ExceptionHandlingConfiguration.class, ExceptionHandlingConfiguration.getDefault());
+    configurations.configurationMap.put(BusPubSubConfiguration.class, BusPubSubConfiguration.getDefault());
+    configurations.configurationMap.put(ListenerFactoryConfiguration.class, ListenerFactoryConfiguration.getDefault());
+    return configurations;
+  }
+
+  /**
+   * Gets the configuration by class.
+   *
+   * @param configuration The configuration class.
+   * @param <T>           The configuration.
+   * @return The configuration.
+   */
+  public <T extends Configuration<?>> T get(Class<T> configuration) {
+
+    T config = configuration.cast(configurationMap.get(configuration));
+    if (config == null) {
+      throw new BusConfigurationException("Could not find configuration for \"" + configuration.getName() + "\".");
+    }
+    return config;
+  }
+
+  /**
+   * The builder that will help build configurations.
+   */
+  public static final class Builder {
 
     /**
      * The configuration map.
      */
-    private final Map<Class<? extends Configuration<?>>, Configuration<?>> configurationMap;
-
-
-    private BusConfigurations(Builder builder) {
-        this.configurationMap = builder == null ? new HashMap<>() : builder.configurationMap;
-    }
+    private final Map<Class<? extends Configuration<?>>, Configuration<?>> configurationMap = new HashMap<>();
 
     /**
-     * Gets the default configuration.
-     * <p>
-     *     This configuration will be good for most non-concurrent cases.
-     * </p>
+     * Sets a configuration.
      *
-     * @return  The default configuration.
+     * @param configurationClass    The configuration class.
+     * @param configurationSupplier The supplier that will supply the configuration.
+     * @return This.
      */
-    public static BusConfigurations getDefault() {
-        BusConfigurations configurations = new BusConfigurations(null);
-        configurations.configurationMap.put(AsynchronousPublicationConfiguration.class, AsynchronousPublicationConfiguration.getDefault());
-        configurations.configurationMap.put(BusConfiguration.class, BusConfiguration.getDefault());
-        configurations.configurationMap.put(ExceptionHandlingConfiguration.class, ExceptionHandlingConfiguration.getDefault());
-        configurations.configurationMap.put(BusPubSubConfiguration.class, BusPubSubConfiguration.getDefault());
-        configurations.configurationMap.put(ListenerFactoryConfiguration.class, ListenerFactoryConfiguration.getDefault());
-        return configurations;
+    public Builder setConfiguration(Class<? extends Configuration<?>> configurationClass, Supplier<Configuration<?>> configurationSupplier) {
+      configurationMap.put(configurationClass, configurationSupplier.get());
+      return this;
     }
 
     /**
-     * Gets the configuration by class.
+     * Builds the new configuration.
      *
-     * @param configuration  The configuration class.
-     * @param <T>  The configuration.
-     * @return  The configuration.
+     * @return The configuration.
      */
-    public <T extends Configuration<?>> T get(Class<T> configuration) {
+    public BusConfigurations build() {
+      BusConfigurations reference = BusConfigurations.getDefault();
+      for (Class<? extends Configuration<?>> configuration : reference.configurationMap.keySet()) {
+        configurationMap.computeIfAbsent(configuration, reference.configurationMap::get);
+      }
 
-        T config = configuration.cast(configurationMap.get(configuration));
-        if(config == null) {
-            throw new BusConfigurationException("Could not find configuration for \"" + configuration.getName() + "\".");
-        }
-        return config;
+      return new BusConfigurations(this);
     }
-
-    /**
-     * The builder that will help build configurations.
-     */
-    public static final class Builder {
-
-        /**
-         * The configuration map.
-         */
-        private final Map<Class<? extends Configuration<?>>, Configuration<?>> configurationMap = new HashMap<>();
-
-        /**
-         * Sets a configuration.
-         *
-         * @param configurationClass  The configuration class.
-         * @param configurationSupplier  The supplier that will supply the configuration.
-         * @return  This.
-         */
-        public Builder setConfiguration(Class<? extends Configuration<?>> configurationClass, Supplier<Configuration<?>> configurationSupplier) {
-            configurationMap.put(configurationClass, configurationSupplier.get());
-            return this;
-        }
-
-        /**
-         * Builds the new configuration.
-         *
-         * @return The configuration.
-         */
-        public BusConfigurations build() {
-            BusConfigurations reference = BusConfigurations.getDefault();
-            for (Class<? extends Configuration<?>> configuration : reference.configurationMap.keySet()) {
-                configurationMap.computeIfAbsent(configuration, reference.configurationMap::get);
-            }
-
-            return new BusConfigurations(this);
-        }
-    }
+  }
 }

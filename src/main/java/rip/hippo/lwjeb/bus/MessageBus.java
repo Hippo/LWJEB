@@ -23,15 +23,17 @@ import rip.hippo.lwjeb.configuration.BusConfigurations;
  * @author Hippo
  * @version 5.0.0, 11/1/19
  * @since 5.0.0
- *
+ * <p>
  * A message bus is a configurable bus.
+ * </p>
  */
 @FunctionalInterface
 public interface MessageBus {
 
-    /**
-     * Gets the current configuration.
-     * @return
-     */
-    BusConfigurations getConfigurations();
+  /**
+   * Gets the current configuration.
+   *
+   * @return
+   */
+  BusConfigurations getConfigurations();
 }

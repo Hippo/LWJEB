@@ -21,16 +21,17 @@ package rip.hippo.lwjeb.configuration.exception.handle;
  * @author Hippo
  * @version 5.0.0, 10/30/19
  * @since 5.0.0
- *
+ * <p>
  * An exception handler handles exceptions, gives you more control on how your errors are handled.
+ * </p>
  */
 @FunctionalInterface
 public interface ExceptionHandler {
 
-    /**
-     * Handles the exception.
-     *
-     * @param t  The exception.
-     */
-    void handleException(Throwable t);
+  /**
+   * Handles the exception.
+   *
+   * @param t The exception.
+   */
+  void handleException(Throwable t);
 }

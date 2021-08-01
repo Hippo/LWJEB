@@ -14,8 +14,36 @@
  * limitations under the License.
  *
  */
+plugins {
+    java
+    id("maven-publish")
+}
 
-rootProject.name = 'LWJEB'
-include 'Java'
-findProject(':Java')?.name = 'LWJEB'
+group = "rip.hippo"
+version = "5.3.0"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+tasks.getByName<Test>("test") {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+}
