@@ -17,9 +17,9 @@
 
 package rip.hippo.lwjeb.testing.benchmarks;
 
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
-import org.junit.jupiter.api.Test;
 
 /**
  * @author Hippo
@@ -28,25 +28,26 @@ import org.junit.jupiter.api.Test;
  */
 public final class SubscriptionBenchmarkTest {
 
-    @Test
-    public void test() {
-        benchmark();
+  @Test
+  public void test() {
+    benchmark();
+  }
+
+  private void benchmark() {
+    PubSub<String> pubSub = new PubSub<>();
+
+    long start = System.nanoTime();
+    SubscriptionBenchmarkTest test = new SubscriptionBenchmarkTest();
+    for (int i = 0; i < 1000000; i++) {
+      pubSub.subscribe(test);
+      pubSub.unsubscribe(test);
     }
+    long finish = System.nanoTime();
+    System.out.println("Finished in " + ((finish / 1000000) - (start / 1000000)) + "ms");
+  }
 
-    private void benchmark() {
-        PubSub<String> pubSub = new PubSub<>();
-
-        long start = System.currentTimeMillis();
-        SubscriptionBenchmarkTest test = new SubscriptionBenchmarkTest();
-        for(int i = 0; i < 1000000; i++) {
-            pubSub.subscribe(test);
-            pubSub.unsubscribe(test);
-        }
-        long finish = System.currentTimeMillis();
-        System.out.println("Finished in " + (finish - start) + "ms");
-    }
-
-    @Handler
-    public void onMessage(String message){}
+  @Handler
+  public void onMessage(String message) {
+  }
 
 }

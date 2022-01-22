@@ -17,11 +17,11 @@
 
 package rip.hippo.lwjeb.testing.standard;
 
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.annotation.Filter;
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
 import rip.hippo.lwjeb.testing.filter.StringCasingFilter;
-import org.junit.jupiter.api.Test;
 
 
 /**
@@ -31,21 +31,21 @@ import org.junit.jupiter.api.Test;
  */
 public final class StandardFiltrationTest {
 
-    @Test
-    public void test() {
+  @Test
+  public void test() {
 
-        PubSub<String> pubSub = new PubSub<>();
-        pubSub.subscribe(this);
+    PubSub<String> pubSub = new PubSub<>();
+    pubSub.subscribe(this);
 
-        pubSub.post("you should see this").dispatch();
-        pubSub.post("You shouldn't see this").dispatch();
-    }
+    pubSub.post("you should see this").dispatch();
+    pubSub.post("You shouldn't see this").dispatch();
+  }
 
-    @Handler
-    @Filter(StringCasingFilter.class) // passes if message is lowercase
-    public void onMessage(String message) {
-        System.out.println(message);
-    }
+  @Handler
+  @Filter(StringCasingFilter.class) // passes if message is lowercase
+  public void onMessage(String message) {
+    System.out.println(message);
+  }
 
 
 }

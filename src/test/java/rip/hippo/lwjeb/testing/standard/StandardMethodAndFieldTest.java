@@ -17,12 +17,12 @@
 
 package rip.hippo.lwjeb.testing.standard;
 
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
 import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
 import rip.hippo.lwjeb.message.scan.impl.MethodAndFieldBasedMessageScanner;
-import org.junit.jupiter.api.Test;
 
 import java.util.function.Consumer;
 
@@ -33,29 +33,28 @@ import java.util.function.Consumer;
  */
 public final class StandardMethodAndFieldTest {
 
-    @Test
-    public void test() {
+  @Handler
+  public final Consumer<String> onMessage = message -> System.out.println("from field: " + message);
 
-        PubSub<String> pubSub = new PubSub<>(new BusConfigurations.Builder().setConfiguration(
-                BusPubSubConfiguration.class, () -> {
-                    BusPubSubConfiguration busPubSubConfiguration = BusPubSubConfiguration.getDefault();
-                    busPubSubConfiguration.setScanner(new MethodAndFieldBasedMessageScanner<>());
-                    return busPubSubConfiguration;
-                }
-        ).build());
+  @Test
+  public void test() {
 
-        pubSub.subscribe(this);
+    PubSub<String> pubSub = new PubSub<>(new BusConfigurations.Builder().setConfiguration(
+        BusPubSubConfiguration.class, () -> {
+          BusPubSubConfiguration busPubSubConfiguration = BusPubSubConfiguration.getDefault();
+          busPubSubConfiguration.setScanner(new MethodAndFieldBasedMessageScanner<>());
+          return busPubSubConfiguration;
+        }
+    ).build());
 
-        pubSub.post("first").dispatch();
-        pubSub.post("second").dispatch();
-    }
+    pubSub.subscribe(this);
 
+    pubSub.post("first").dispatch();
+    pubSub.post("second").dispatch();
+  }
 
-    @Handler
-    public final Consumer<String> onMessage = message -> System.out.println("from field: " + message);
-
-    @Handler
-    public void onMessage(String message) {
-        System.out.println("from method: " + message);
-    }
+  @Handler
+  public void onMessage(String message) {
+    System.out.println("from method: " + message);
+  }
 }

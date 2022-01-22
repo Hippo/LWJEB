@@ -17,11 +17,11 @@
 
 package rip.hippo.lwjeb.testing.benchmarks;
 
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.bus.PubSub;
 import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
 import rip.hippo.lwjeb.message.publish.impl.ExperimentalMessagePublisher;
-import org.junit.jupiter.api.Test;
 
 /**
  * @author Hippo
@@ -30,26 +30,26 @@ import org.junit.jupiter.api.Test;
  */
 public final class PublishBenchmarkTest {
 
-    @Test
-    public void test() {
-        benchmark();
-    }
+  @Test
+  public void test() {
+    benchmark();
+  }
 
-    private void benchmark() {
-        PubSub<String> pubSub = new PubSub<>(new BusConfigurations.Builder().setConfiguration(
-                BusPubSubConfiguration.class, () -> {
-                    BusPubSubConfiguration busPubSubConfiguration = BusPubSubConfiguration.getDefault();
-                    busPubSubConfiguration.setPublisher(new ExperimentalMessagePublisher<>());
-                    return busPubSubConfiguration;
-                }
-        ).build());
-
-        long start = System.currentTimeMillis();
-        for(int i = 0; i < 1000000; i++) {
-            pubSub.post("").dispatch();
+  private void benchmark() {
+    PubSub<String> pubSub = new PubSub<>(new BusConfigurations.Builder().setConfiguration(
+        BusPubSubConfiguration.class, () -> {
+          BusPubSubConfiguration busPubSubConfiguration = BusPubSubConfiguration.getDefault();
+          busPubSubConfiguration.setPublisher(new ExperimentalMessagePublisher<>());
+          return busPubSubConfiguration;
         }
-        long finish = System.currentTimeMillis();
-        System.out.println("Finished in " + (finish - start) + "ms");
+    ).build());
+
+    long start = System.nanoTime();
+    for (int i = 0; i < 1000000; i++) {
+      pubSub.post("").dispatch();
     }
+    long finish = System.nanoTime();
+    System.out.println("Finished in " + ((finish / 1000000) - (start / 1000000)) + "ms");
+  }
 
 }

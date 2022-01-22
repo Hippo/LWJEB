@@ -17,12 +17,12 @@
 
 package rip.hippo.lwjeb.testing.standard;
 
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
 import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
 import rip.hippo.lwjeb.message.scan.impl.FieldBasedMessageScanner;
-import org.junit.jupiter.api.Test;
 
 import java.util.function.Consumer;
 
@@ -33,24 +33,23 @@ import java.util.function.Consumer;
  */
 public final class StandardFieldTest {
 
-    @Test
-    public void test() {
+  @Handler
+  private final Consumer<String> onMessage = System.out::println;
 
-        PubSub<String> pubSub = new PubSub<>(new BusConfigurations.Builder().setConfiguration(
-                BusPubSubConfiguration.class, () -> {
-                    BusPubSubConfiguration busPubSubConfiguration = BusPubSubConfiguration.getDefault();
-                    busPubSubConfiguration.setScanner(new FieldBasedMessageScanner<>());
-                    return busPubSubConfiguration;
-                }
-        ).build());
+  @Test
+  public void test() {
 
-        pubSub.subscribe(this);
+    PubSub<String> pubSub = new PubSub<>(new BusConfigurations.Builder().setConfiguration(
+        BusPubSubConfiguration.class, () -> {
+          BusPubSubConfiguration busPubSubConfiguration = BusPubSubConfiguration.getDefault();
+          busPubSubConfiguration.setScanner(new FieldBasedMessageScanner<>());
+          return busPubSubConfiguration;
+        }
+    ).build());
 
-        pubSub.post("first").dispatch();
-        pubSub.post("second").dispatch();
-    }
+    pubSub.subscribe(this);
 
-
-    @Handler
-    private final Consumer<String> onMessage = System.out::println;
+    pubSub.post("first").dispatch();
+    pubSub.post("second").dispatch();
+  }
 }

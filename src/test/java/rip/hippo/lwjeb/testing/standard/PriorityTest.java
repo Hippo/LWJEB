@@ -24,11 +24,13 @@ public final class PriorityTest {
   public void onMessage3(String topic) {
     System.out.println("3 " + topic);
   }
+
   @Handler
   @Priority(2)
   public void onMessage2(String topic) {
     System.out.println("2 " + topic);
   }
+
   @Handler
   @Priority(1)
   public void onMessage1(String topic) {

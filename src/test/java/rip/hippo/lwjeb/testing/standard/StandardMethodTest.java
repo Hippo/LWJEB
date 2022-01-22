@@ -17,15 +17,9 @@
 
 package rip.hippo.lwjeb.testing.standard;
 
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
-import org.junit.jupiter.api.Test;
-import rip.hippo.lwjeb.configuration.BusConfigurations;
-import rip.hippo.lwjeb.configuration.config.impl.ListenerFactoryConfiguration;
-import rip.hippo.lwjeb.configuration.invocation.impl.DirectListenerFactory;
-import rip.hippo.lwjeb.configuration.invocation.impl.LambdaMetaFactoryListenerFactory;
-import rip.hippo.lwjeb.configuration.invocation.impl.MethodHandleListenerFactory;
-import rip.hippo.lwjeb.configuration.invocation.impl.ReflectiveListenerFactory;
 
 
 /**
@@ -35,30 +29,30 @@ import rip.hippo.lwjeb.configuration.invocation.impl.ReflectiveListenerFactory;
  */
 public final class StandardMethodTest {
 
-    @Test
+  @Test
+  public void test() {
+    PubSub<Event> pubSub = new PubSub<>();
+    pubSub.subscribe(this);
+
+    pubSub.post(new MyEvent()).dispatch();
+
+  }
+
+  @Handler
+  public void onMessage(MyEvent message) {
+    message.test();
+  }
+
+  public static abstract class Event {
+    public abstract void test();
+  }
+
+  public static final class MyEvent extends Event {
+    @Override
     public void test() {
-        PubSub<Event> pubSub = new PubSub<>();
-        pubSub.subscribe(this);
-
-        pubSub.post(new MyEvent()).dispatch();
-
+      System.out.println("Invoked");
     }
-
-    @Handler
-    public void onMessage(MyEvent message) {
-        message.test();
-    }
-
-    public static abstract class Event {
-        public abstract void test();
-    }
-
-    public static final class MyEvent extends Event {
-        @Override
-        public void test() {
-            System.out.println("Invoked");
-        }
-    }
+  }
 
 
 }

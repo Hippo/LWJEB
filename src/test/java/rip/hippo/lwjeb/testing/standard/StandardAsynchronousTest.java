@@ -17,12 +17,12 @@
 
 package rip.hippo.lwjeb.testing.standard;
 
+import org.junit.jupiter.api.Test;
 import rip.hippo.lwjeb.annotation.Handler;
 import rip.hippo.lwjeb.bus.PubSub;
 import rip.hippo.lwjeb.configuration.BusConfigurations;
 import rip.hippo.lwjeb.configuration.config.impl.BusPubSubConfiguration;
 import rip.hippo.lwjeb.subscribe.impl.StrongReferencedListenerSubscriber;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,51 +38,51 @@ import java.util.Scanner;
  */
 public final class StandardAsynchronousTest {
 
-    @Test
-    public void test() {
+  @Test
+  public void test() {
 
-        PubSub<File> pubSub = new PubSub<>(new BusConfigurations.Builder()
-            .setConfiguration(BusPubSubConfiguration.class, () -> {
-                BusPubSubConfiguration configuration = BusPubSubConfiguration.getDefault();
-                configuration.setSubscriber(new StrongReferencedListenerSubscriber<>());
-                return configuration;
-            }).build()
-        );
+    PubSub<File> pubSub = new PubSub<>(new BusConfigurations.Builder()
+        .setConfiguration(BusPubSubConfiguration.class, () -> {
+          BusPubSubConfiguration configuration = BusPubSubConfiguration.getDefault();
+          configuration.setSubscriber(new StrongReferencedListenerSubscriber<>());
+          return configuration;
+        }).build()
+    );
 
-        pubSub.setupDispatchers();
-        pubSub.subscribe(this);
+    pubSub.setupDispatchers();
+    pubSub.subscribe(this);
 
-        File file = new File("MyCoolFile");
-        try {
-            file.createNewFile();
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write("this is my super duper cool file");
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        pubSub.post(file).async();
-
-
-        pubSub.shutdown();
-
+    File file = new File("MyCoolFile");
+    try {
+      file.createNewFile();
+      FileWriter fileWriter = new FileWriter(file);
+      fileWriter.write("this is my super duper cool file");
+      fileWriter.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    @Handler
-    public void onMessage(File message) {
-        try {
+    pubSub.post(file).async();
 
-            Scanner scanner = new Scanner(message);
-            while (scanner.hasNext()) {
-                System.out.println(scanner.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        message.delete();
+    pubSub.shutdown();
+
+  }
+
+  @Handler
+  public void onMessage(File message) {
+    try {
+
+      Scanner scanner = new Scanner(message);
+      while (scanner.hasNext()) {
+        System.out.println(scanner.nextLine());
+      }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
+
+    message.delete();
+  }
 
 
 }
