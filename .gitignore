@@ -3,7 +3,9 @@
 build/
 
 # IDEA
-.idea
+!.idea/
+.idea/*
+!.idea/codeStyles/
 
 #OSX
 .DS_Store

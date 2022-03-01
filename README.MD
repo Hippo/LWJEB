@@ -4,16 +4,14 @@ A speed and convenient designed pubsub written in java.
 
 Add LWJEB to your project:
 
-```groovy
+```kotlin
 repositories {
-    maven {
-      url 'https://jitpack.io'
-    }
+    maven("https://jitpack.io")
 }
 ```
 
-```groovy
+```kotlin
 dependencies {
-    implementation group: 'com.github.Hippo', name: 'LWJEB', version: '5.3.0'
+    implementation("rip.hippo:LWJEB:5.3.0")
 }
 ```
